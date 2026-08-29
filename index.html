@@ -518,17 +518,38 @@
   .edit-flag .dot{ width:6px; height:6px; border-radius:50%; background:#fff9ef; }
 
   @media print{
-    .hero, .sustain, .toolbar, .edit-flag, .lightbox, .photo-add-btn, .gallery-strip{ display:none; }
-    body{ background:#fff; }
-    .grid{ display:block; }
+    .hero, .sustain, .toolbar, .edit-flag, .lightbox, .photo-add-btn, .gallery-strip, .material-icons, .card-tags{ display:none; }
+    body{ background:#fff; font-size:11px; }
+    .wrap{ padding:0 6px; }
+    header.top{ padding:10px 0; margin-bottom:10px; }
+    .section-head{ margin-bottom:8px; }
+    .section-head h2{ font-size:16px; }
+    .section-head p{ font-size:10.5px; }
+    .grid{ display:block; margin-bottom:14px; }
     .card{
-      display:inline-block; width:47%; vertical-align:top;
-      margin:0 3% 18px 0; box-shadow:none; break-inside:avoid; page-break-inside:avoid;
+      display:flex; flex-direction:row; align-items:center; gap:12px;
+      width:100%; margin:0 0 8px; padding:6px 0;
+      border:none; border-bottom:1px solid #ddd; border-radius:0;
+      box-shadow:none; break-inside:avoid; page-break-inside:avoid;
     }
-    .card:nth-child(even){ margin-right:0; }
-    .price-input{ background:#fff; border-color:#ccc; }
+    .card-photo{ width:60px; height:60px; aspect-ratio:auto; flex:none; }
+    .card-photo .card-ref{ display:none; }
+    .card-body{
+      flex:1; padding:0; gap:2px;
+      display:grid; grid-template-columns:1fr auto; column-gap:16px; align-items:center;
+    }
+    .card-cat{ display:none; }
+    .card-title{ font-size:12.5px; grid-column:1; }
+    .card-desc{ display:none; }
+    .price-row{
+      grid-column:2; grid-row:1; border:none; padding:0; margin:0;
+      display:flex; gap:14px; align-items:baseline;
+    }
+    .price-field label{ font-size:8.5px; }
+    .price-input{ background:none; border:none; padding:0; }
+    .price-input input{ font-size:12px; padding:0; }
+    .margin-line{ display:none; }
     [contenteditable="true"]{ box-shadow:none !important; }
-    .mat-icon{ opacity:1 !important; }
   }
 </style>
 </head>
