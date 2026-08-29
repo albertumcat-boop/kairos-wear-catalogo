@@ -147,9 +147,11 @@
     margin:0;
   }
   .hero-scroll{
-    position:relative;
+    position:absolute;
+    left:50%;
+    bottom:34px;
+    transform:translateX(-50%);
     z-index:1;
-    margin-top:38px;
     font-size:11px;
     letter-spacing:0.14em;
     text-transform:uppercase;
@@ -350,6 +352,9 @@
   }
   .card-photo{ background:var(--card-photo); aspect-ratio:3/4; position:relative; overflow:hidden; }
   .card-photo img{ width:100%; height:100%; object-fit:cover; }
+  .card-photo.zoomable{ cursor:zoom-in; }
+  .card-photo.zoomable .main-photo{ transition:transform .35s ease; }
+  .card-photo.zoomable:hover .main-photo{ transform:scale(1.035); }
   .card-ref{
     position:absolute; top:10px; left:10px;
     font-family:"IBM Plex Mono", monospace;
@@ -358,6 +363,31 @@
     background:rgba(255,253,248,0.82);
     padding:3px 7px; border-radius:2px;
   }
+  .photo-add-btn{
+    position:absolute; right:8px; bottom:8px;
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(20,16,10,0.55); color:#fff9ef;
+    border:none; font-size:17px; line-height:1;
+    align-items:center; justify-content:center;
+    cursor:pointer; display:none;
+  }
+  body.edit-mode .photo-add-btn{ display:flex; }
+  .photo-add-btn:hover{ background:var(--accent); }
+  .gallery-strip{ display:flex; gap:6px; padding:8px 8px 0; overflow-x:auto; }
+  .gallery-strip:empty{ display:none; padding:0; }
+  .thumb-wrap{ position:relative; flex:none; }
+  .thumb-wrap img{
+    width:44px; height:44px; object-fit:cover; border-radius:3px;
+    border:1px solid var(--line); cursor:pointer; display:block;
+  }
+  .thumb-wrap.active img{ border-color:var(--accent); }
+  .thumb-remove{
+    position:absolute; top:-5px; right:-5px;
+    width:15px; height:15px; border-radius:50%;
+    background:#a33d2a; color:#fff; font-size:9px; line-height:15px;
+    text-align:center; cursor:pointer; display:none;
+  }
+  body.edit-mode .thumb-remove{ display:block; }
   .card-body{ padding:18px 18px 20px; display:flex; flex-direction:column; gap:11px; flex:1; }
   .card-cat{ font-size:11px; text-transform:uppercase; letter-spacing:0.09em; color:var(--accent); font-weight:600; }
   .card-title{ font-family:"Fraunces", Georgia, serif; font-weight:500; font-size:19px; margin:0; text-wrap:balance; }
@@ -366,6 +396,15 @@
   .card-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:-2px; }
   .tag{ font-size:10.5px; letter-spacing:0.03em; color:var(--ink-soft); border:1px solid var(--line); border-radius:2px; padding:3px 7px; }
   .tag.eco{ color:var(--accent-ink); border-color:var(--accent); background:var(--accent-soft); font-weight:500; }
+
+  .material-icons{ display:flex; flex-wrap:wrap; gap:6px; }
+  .mat-icon{ border:none; background:none; padding:0; border-radius:6px; cursor:default; }
+  .mat-icon img{ width:26px; height:26px; border-radius:5px; box-shadow:0 0 0 1px var(--line); display:block; }
+  body:not(.edit-mode) .mat-icon{ display:none; }
+  body:not(.edit-mode) .mat-icon.active{ display:inline-flex; }
+  body.edit-mode .mat-icon{ opacity:0.3; cursor:pointer; transition:opacity .15s ease; }
+  body.edit-mode .mat-icon.active{ opacity:1; }
+  body.edit-mode .mat-icon.active img{ box-shadow:0 0 0 2px var(--accent); }
 
   .price-row{ margin-top:auto; padding-top:14px; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .price-field label{ display:block; font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-faint); margin-bottom:5px; }
@@ -431,12 +470,60 @@
   footer.site .foot-brand{ display:flex; align-items:center; gap:8px; }
   footer.site .foot-brand img{ width:18px; height:18px; }
 
+  .lightbox{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(10,8,5,0.94);
+    display:none; align-items:center; justify-content:center;
+    flex-direction:column; padding:48px 20px;
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox img{
+    max-width:min(880px,88vw); max-height:72vh; object-fit:contain;
+    border-radius:4px; box-shadow:0 24px 70px rgba(0,0,0,0.55);
+  }
+  .lightbox-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    background:rgba(255,255,255,0.12); border:none; color:#fff;
+    width:44px; height:44px; border-radius:50%; font-size:22px;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-nav:hover{ background:rgba(255,255,255,0.22); }
+  .lightbox-prev{ left:16px; }
+  .lightbox-next{ right:16px; }
+  .lightbox-close{
+    position:absolute; top:16px; right:20px;
+    background:none; border:none; color:#f1ead9; font-size:28px;
+    cursor:pointer; line-height:1;
+  }
+  .lightbox-count{ color:#cbbfa4; font-size:11.5px; letter-spacing:0.08em; margin-top:16px; text-transform:uppercase; }
+
+  .edit-flag{
+    position:fixed;
+    right:14px; bottom:14px;
+    z-index:50;
+    background:var(--accent);
+    color:#fff9ef;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:7px 12px;
+    border-radius:999px;
+    box-shadow:var(--shadow);
+    display:none;
+    align-items:center;
+    gap:6px;
+  }
+  body.edit-mode .edit-flag{ display:inline-flex; }
+  .edit-flag .dot{ width:6px; height:6px; border-radius:50%; background:#fff9ef; }
+
   @media print{
-    .hero, .sustain, .toolbar{ display:none; }
+    .hero, .sustain, .toolbar, .edit-flag, .lightbox, .photo-add-btn, .gallery-strip{ display:none; }
     body{ background:#fff; }
     .card{ box-shadow:none; break-inside:avoid; }
     .price-input{ background:#fff; border-color:#ccc; }
     [contenteditable="true"]{ box-shadow:none !important; }
+    .mat-icon{ opacity:1 !important; }
   }
 </style>
 </head>
@@ -493,6 +580,7 @@
     <div class="toolbar">
       <div class="toolbar-hint"><span class="dot-save"></span> Los cambios se guardan solos en este navegador</div>
       <div class="toolbar-actions">
+        <button class="btn" id="shareBtn" type="button">Copiar enlace público</button>
         <button class="btn" id="resetBtn" type="button">Restablecer textos</button>
         <button class="btn" id="printBtn" type="button">Imprimir</button>
         <button class="btn primary" id="downloadBtn" type="button">Descargar catálogo (.html)</button>
@@ -507,12 +595,24 @@
     <div class="grid" id="grid">
 
       <article class="card" data-id="camiseta">
-        <div class="card-photo"><span class="card-ref">KW-001</span><img src="assets/products/camiseta.webp" alt="Camiseta Kairos Wear color crudo con logo bordado" loading="lazy"></div>
+        <div class="card-photo zoomable" data-photo-id="camiseta"><span class="card-ref">KW-001</span><img class="main-photo" src="assets/products/camiseta.webp" alt="Camiseta Kairos Wear color crudo con logo bordado" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="camiseta" title="Agregar fotos">+</button></div>
+        <div class="gallery-strip" data-gallery-for="camiseta"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="camiseta">
         <div class="card-body">
           <span class="card-cat">Camisetas</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-camiseta">Camiseta Oversize Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-camiseta">Camiseta oversize en algodón de tacto pesado, con logo Kairos Wear bordado tono sobre tono y parche en el bajo. Pieza de nuestra línea sostenible: teñida con nuestro proceso Eco Dye de cero vertido de agua residual.</div>
           <div class="card-tags"><span class="tag">Algodón pesado</span><span class="tag">Unisex</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="camiseta">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
           <div class="price-row">
             <div class="price-field"><label for="p-camiseta-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-camiseta-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -526,12 +626,24 @@
       </article>
 
       <article class="card" data-id="jogger">
-        <div class="card-photo"><span class="card-ref">KW-002</span><img src="assets/products/jogger.webp" alt="Jogger Kairos Wear color crudo" loading="lazy"></div>
+        <div class="card-photo zoomable" data-photo-id="jogger"><span class="card-ref">KW-002</span><img class="main-photo" src="assets/products/jogger.webp" alt="Jogger Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="jogger" title="Agregar fotos">+</button></div>
+        <div class="gallery-strip" data-gallery-for="jogger"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="jogger">
         <div class="card-body">
           <span class="card-cat">Pantalones</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-jogger">Jogger Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-jogger">Jogger en felpa suave, cintura elástica con cordón ajustable y puños ribeteados. Confeccionado dentro de nuestra colección eco-friendly, con fibra recuperada y acabado antifluidos que alarga su vida útil.</div>
           <div class="card-tags"><span class="tag">Felpa</span><span class="tag">Cintura elástica</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="jogger">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
           <div class="price-row">
             <div class="price-field"><label for="p-jogger-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-jogger-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -545,12 +657,24 @@
       </article>
 
       <article class="card" data-id="hoodie">
-        <div class="card-photo"><span class="card-ref">KW-003</span><img src="assets/products/hoodie.webp" alt="Hoodie Kairos Wear color crudo" loading="lazy"></div>
+        <div class="card-photo zoomable" data-photo-id="hoodie"><span class="card-ref">KW-003</span><img class="main-photo" src="assets/products/hoodie.webp" alt="Hoodie Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="hoodie" title="Agregar fotos">+</button></div>
+        <div class="gallery-strip" data-gallery-for="hoodie"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="hoodie">
         <div class="card-body">
           <span class="card-cat">Buzos</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-hoodie">Hoodie Oversize Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-hoodie">Hoodie oversize con capucha de tres piezas y cordones ajustables, bolsillo canguro y cordón de ajuste en el bajo. Felpa de gramaje alto, hecha con fibra reciclada y tinte ecológico como parte de nuestra colección sostenible.</div>
           <div class="card-tags"><span class="tag">Felpa gramaje alto</span><span class="tag">Oversize</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="hoodie">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
           <div class="price-row">
             <div class="price-field"><label for="p-hoodie-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-hoodie-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -564,12 +688,24 @@
       </article>
 
       <article class="card" data-id="chaqueta">
-        <div class="card-photo"><span class="card-ref">KW-004</span><img src="assets/products/chaqueta.webp" alt="Chaqueta de mezclilla Kairos Wear color crudo" loading="lazy"></div>
+        <div class="card-photo zoomable" data-photo-id="chaqueta"><span class="card-ref">KW-004</span><img class="main-photo" src="assets/products/chaqueta.webp" alt="Chaqueta de mezclilla Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="chaqueta" title="Agregar fotos">+</button></div>
+        <div class="gallery-strip" data-gallery-for="chaqueta"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="chaqueta">
         <div class="card-body">
           <span class="card-cat">Chaquetas</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-chaqueta">Chaqueta Denim Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-chaqueta">Chaqueta trucker en mezclilla cruda con botones metálicos color cobre y doble bolsillo de pecho. Producida bajo nuestro estándar eco-friendly, con huella hídrica reducida frente a un denim convencional.</div>
           <div class="card-tags"><span class="tag">Mezclilla</span><span class="tag">Botones cobre</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="chaqueta">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
           <div class="price-row">
             <div class="price-field"><label for="p-chaqueta-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-chaqueta-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -583,12 +719,24 @@
       </article>
 
       <article class="card" data-id="cargo">
-        <div class="card-photo"><span class="card-ref">KW-005</span><img src="assets/products/cargo.webp" alt="Pantalón cargo Kairos Wear color crudo" loading="lazy"></div>
+        <div class="card-photo zoomable" data-photo-id="cargo"><span class="card-ref">KW-005</span><img class="main-photo" src="assets/products/cargo.webp" alt="Pantalón cargo Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="cargo" title="Agregar fotos">+</button></div>
+        <div class="gallery-strip" data-gallery-for="cargo"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="cargo">
         <div class="card-body">
           <span class="card-cat">Pantalones</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-cargo">Cargo Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-cargo">Pantalón cargo en felpa con bolsillos laterales de fuelle, cintura elástica y cordón. Parte de la colección sostenible Kairos, confeccionado con fibra recuperada y acabado antibacterial.</div>
           <div class="card-tags"><span class="tag">Felpa</span><span class="tag">Bolsillos cargo</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="cargo">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
           <div class="price-row">
             <div class="price-field"><label for="p-cargo-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-cargo-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -602,12 +750,24 @@
       </article>
 
       <article class="card" data-id="bolso">
-        <div class="card-photo"><span class="card-ref">KW-006</span><img src="assets/products/bolso.webp" alt="Morral de mezclilla Kairos Wear" loading="lazy"></div>
+        <div class="card-photo zoomable" data-photo-id="bolso"><span class="card-ref">KW-006</span><img class="main-photo" src="assets/products/bolso.webp" alt="Morral de mezclilla Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="bolso" title="Agregar fotos">+</button></div>
+        <div class="gallery-strip" data-gallery-for="bolso"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="bolso">
         <div class="card-body">
           <span class="card-cat">Accesorios</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-bolso">Morral Denim Cordón</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-bolso">Morral tipo saco en mezclilla oscura con cordones blancos trenzados, bolsillo frontal y parche Kairos Wear. Confeccionado con fibra reciclada como parte de nuestro compromiso eco-friendly.</div>
           <div class="card-tags"><span class="tag">Mezclilla</span><span class="tag">Cordón ajustable</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="bolso">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
           <div class="price-row">
             <div class="price-field"><label for="p-bolso-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-bolso-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -621,12 +781,24 @@
       </article>
 
       <article class="card" data-id="cordon">
-        <div class="card-photo"><span class="card-ref">KW-007</span><img src="assets/products/cordon.webp" alt="Cordón porta-carnet Kairos Wear" loading="lazy"></div>
+        <div class="card-photo zoomable" data-photo-id="cordon"><span class="card-ref">KW-007</span><img class="main-photo" src="assets/products/cordon.webp" alt="Cordón porta-carnet Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="cordon" title="Agregar fotos">+</button></div>
+        <div class="gallery-strip" data-gallery-for="cordon"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="cordon">
         <div class="card-body">
           <span class="card-cat">Accesorios</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-cordon">Cordón Porta-Carnet</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-cordon">Cordón tejido en tono crudo con costura central y mosquetón metálico giratorio. Accesorio de nuestra línea sostenible, elaborado con algodón y poliéster recuperado de botellas PET.</div>
           <div class="card-tags"><span class="tag">Cinta tejida</span><span class="tag">Mosquetón metálico</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="cordon">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
           <div class="price-row">
             <div class="price-field"><label for="p-cordon-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-cordon-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -732,18 +904,44 @@
     </footer>
   </div>
 
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lbClose" type="button" aria-label="Cerrar">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lbPrev" type="button" aria-label="Anterior">&lsaquo;</button>
+    <img id="lbImg" src="" alt="">
+    <button class="lightbox-nav lightbox-next" id="lbNext" type="button" aria-label="Siguiente">&rsaquo;</button>
+    <div class="lightbox-count" id="lbCount"></div>
+  </div>
+
+  <div class="edit-flag"><span class="dot"></span> Modo edición</div>
+
 <script>
 (function(){
   var STORE_KEY = "kairos-wear-catalog-v3";
-  var store = { prices:{}, texts:{} };
+  var store = { prices:{}, texts:{}, gallery:{}, materials:{} };
   try{
     var saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
     if(saved.prices) store.prices = saved.prices;
     if(saved.texts) store.texts = saved.texts;
+    if(saved.gallery) store.gallery = saved.gallery;
+    if(saved.materials) store.materials = saved.materials;
   }catch(e){}
+
+  var EDIT_MODE = new URLSearchParams(location.search).get("edit") === "1";
+  document.body.classList.toggle("edit-mode", EDIT_MODE);
+  document.body.classList.toggle("view-only", !EDIT_MODE);
 
   function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){} }
   function fmt(n){ return n.toLocaleString("es-VE", {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+  if(!EDIT_MODE){
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){ el.removeAttribute("contenteditable"); });
+    document.querySelectorAll('input[data-role]').forEach(function(el){ el.readOnly = true; el.tabIndex = -1; });
+    var rb = document.getElementById("resetBtn"); if(rb) rb.remove();
+    var hint = document.querySelector(".toolbar-hint");
+    if(hint) hint.innerHTML = 'Vista de solo lectura';
+    var topMeta = document.querySelector(".top-meta");
+    if(topMeta) topMeta.innerHTML = 'Catálogo de referencia. Los precios y textos están fijados por Kairos Wear.';
+  }
 
   /* ---- editable text (site-wide) ---- */
   var editableEls = document.querySelectorAll('[contenteditable="true"][data-key]');
@@ -763,15 +961,18 @@
     });
   });
 
-  document.getElementById("resetBtn").addEventListener("click", function(){
-    if(!confirm("Esto restablece todos los textos de la página a su versión original. Los precios no se ven afectados. ¿Continuar?")) return;
-    editableEls.forEach(function(el){
-      var key = el.getAttribute("data-key");
-      el.textContent = defaults[key];
+  var resetBtnEl = document.getElementById("resetBtn");
+  if(resetBtnEl){
+    resetBtnEl.addEventListener("click", function(){
+      if(!confirm("Esto restablece todos los textos de la página a su versión original. Los precios no se ven afectados. ¿Continuar?")) return;
+      editableEls.forEach(function(el){
+        var key = el.getAttribute("data-key");
+        el.textContent = defaults[key];
+      });
+      store.texts = {};
+      save();
     });
-    store.texts = {};
-    save();
-  });
+  }
 
   /* ---- prices (product + service cards) ---- */
   var cards = document.querySelectorAll(".card");
@@ -851,6 +1052,165 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var heroVideo = document.getElementById("heroVideo");
   if(reduceMotion && heroVideo){ heroVideo.pause(); }
+
+  /* ---- copy public (view-only) link ---- */
+  var shareBtn = document.getElementById("shareBtn");
+  if(shareBtn){
+    if(!EDIT_MODE){ shareBtn.remove(); }
+    else{
+      shareBtn.addEventListener("click", function(){
+        var publicUrl = location.origin + location.pathname;
+        var restore = shareBtn.textContent;
+        function done(ok){ shareBtn.textContent = ok ? "Enlace copiado" : publicUrl; setTimeout(function(){ shareBtn.textContent = restore; }, 1800); }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(publicUrl).then(function(){ done(true); }, function(){ done(false); });
+        } else { done(false); }
+      });
+    }
+  }
+
+  /* ---- per-product material icons ---- */
+  var DEFAULT_MATERIALS = {
+    camiseta: ["eco","ecodye"],
+    jogger: ["fibra","antifluid"],
+    hoodie: ["fibra","ecodye"],
+    chaqueta: ["huella","eco"],
+    cargo: ["fibra","antibact"],
+    bolso: ["fibra","eco"],
+    cordon: ["poliester","eco"]
+  };
+  document.querySelectorAll(".material-icons").forEach(function(box){
+    var id = box.getAttribute("data-materials-for");
+    var active = store.materials[id] || DEFAULT_MATERIALS[id] || [];
+    function applyActive(){
+      box.querySelectorAll(".mat-icon").forEach(function(btn){
+        btn.classList.toggle("active", active.indexOf(btn.getAttribute("data-mat")) !== -1);
+      });
+    }
+    applyActive();
+    box.querySelectorAll(".mat-icon").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        if(!EDIT_MODE) return;
+        var mat = btn.getAttribute("data-mat");
+        var i = active.indexOf(mat);
+        if(i === -1) active.push(mat); else active.splice(i,1);
+        store.materials[id] = active;
+        save();
+        applyActive();
+      });
+    });
+  });
+
+  /* ---- extra photos per product + lightbox ---- */
+  function resizeImage(file, maxDim, quality){
+    return new Promise(function(resolve, reject){
+      var reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = function(){
+        var img = new Image();
+        img.onerror = reject;
+        img.onload = function(){
+          var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+          var w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+          var canvas = document.createElement("canvas");
+          canvas.width = w; canvas.height = h;
+          canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  var lightbox = document.getElementById("lightbox");
+  var lbImg = document.getElementById("lbImg");
+  var lbCount = document.getElementById("lbCount");
+  var lbState = { images: [], index: 0 };
+
+  function openLightbox(images, index){
+    lbState.images = images; lbState.index = index;
+    renderLightbox();
+    lightbox.classList.add("open");
+  }
+  function renderLightbox(){
+    lbImg.src = lbState.images[lbState.index];
+    lbCount.textContent = (lbState.index + 1) + " / " + lbState.images.length;
+  }
+  function closeLightbox(){ lightbox.classList.remove("open"); lbImg.src = ""; }
+  function lbStep(delta){
+    lbState.index = (lbState.index + delta + lbState.images.length) % lbState.images.length;
+    renderLightbox();
+  }
+  document.getElementById("lbClose").addEventListener("click", closeLightbox);
+  document.getElementById("lbPrev").addEventListener("click", function(){ lbStep(-1); });
+  document.getElementById("lbNext").addEventListener("click", function(){ lbStep(1); });
+  lightbox.addEventListener("click", function(e){ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener("keydown", function(e){
+    if(!lightbox.classList.contains("open")) return;
+    if(e.key === "Escape") closeLightbox();
+    if(e.key === "ArrowLeft") lbStep(-1);
+    if(e.key === "ArrowRight") lbStep(1);
+  });
+
+  document.querySelectorAll(".card-photo.zoomable").forEach(function(photo){
+    var id = photo.getAttribute("data-photo-id");
+    var mainSrc = photo.querySelector(".main-photo").src;
+    var strip = document.querySelector('.gallery-strip[data-gallery-for="' + id + '"]');
+    var fileInput = document.querySelector('.gallery-file-input[data-for="' + id + '"]');
+    var addBtn = photo.querySelector(".photo-add-btn");
+
+    function allImages(){ return [mainSrc].concat(store.gallery[id] || []); }
+
+    function renderStrip(){
+      strip.innerHTML = "";
+      (store.gallery[id] || []).forEach(function(src, i){
+        var wrap = document.createElement("div");
+        wrap.className = "thumb-wrap";
+        var img = document.createElement("img");
+        img.src = src;
+        img.alt = "";
+        img.addEventListener("click", function(){ openLightbox(allImages(), i + 1); });
+        wrap.appendChild(img);
+        var rm = document.createElement("span");
+        rm.className = "thumb-remove";
+        rm.textContent = "×";
+        rm.title = "Quitar foto";
+        rm.addEventListener("click", function(ev){
+          ev.stopPropagation();
+          store.gallery[id].splice(i, 1);
+          save();
+          renderStrip();
+        });
+        wrap.appendChild(rm);
+        strip.appendChild(wrap);
+      });
+    }
+    renderStrip();
+
+    photo.addEventListener("click", function(e){
+      if(e.target.closest(".photo-add-btn")) return;
+      openLightbox(allImages(), 0);
+    });
+
+    if(addBtn && fileInput){
+      addBtn.addEventListener("click", function(e){
+        e.stopPropagation();
+        fileInput.click();
+      });
+      fileInput.addEventListener("click", function(e){ e.stopPropagation(); });
+      fileInput.addEventListener("change", function(){
+        var files = Array.from(fileInput.files || []);
+        if(!files.length) return;
+        Promise.all(files.map(function(f){ return resizeImage(f, 1280, 0.82); })).then(function(dataUrls){
+          store.gallery[id] = (store.gallery[id] || []).concat(dataUrls);
+          save();
+          renderStrip();
+        }).catch(function(){});
+        fileInput.value = "";
+      });
+    }
+  });
 })();
 </script>
 </body>
