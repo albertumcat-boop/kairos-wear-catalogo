@@ -373,6 +373,20 @@
   }
   body.edit-mode .photo-add-btn{ display:flex; }
   .photo-add-btn:hover{ background:var(--accent); }
+  .photo-remove-btn{
+    position:absolute; left:8px; bottom:8px;
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(20,16,10,0.55); color:#fff9ef;
+    border:none; font-size:15px; line-height:1;
+    align-items:center; justify-content:center;
+    cursor:pointer; display:none;
+  }
+  body.edit-mode .photo-remove-btn.show{ display:flex; }
+  .photo-remove-btn:hover{ background:#a33d2a; }
+  .card-photo.empty{ display:flex; align-items:center; justify-content:center; }
+  .card-photo.empty .empty-label{
+    font-size:12px; color:var(--ink-faint); text-align:center; padding:0 20px;
+  }
   .gallery-strip{ display:flex; gap:6px; padding:8px 8px 0; overflow-x:auto; }
   .gallery-strip:empty{ display:none; padding:0; }
   .thumb-wrap{ position:relative; flex:none; }
@@ -427,6 +441,22 @@
   .margin-line{ grid-column:1 / -1; font-size:11.5px; color:var(--ink-faint); display:flex; justify-content:space-between; padding-top:2px; }
   .margin-line .m-val{ font-family:"IBM Plex Mono", monospace; color:var(--good); font-variant-numeric:tabular-nums; }
   .margin-line .m-val.empty{ color:var(--ink-faint); }
+
+  .min-qty{
+    display:flex; align-items:center; gap:4px;
+    margin-top:5px;
+    font-size:10.5px; color:var(--ink-faint);
+  }
+  .min-qty input{
+    width:34px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:10.5px; font-variant-numeric:tabular-nums;
+    color:var(--ink-soft);
+    background:var(--surface-alt);
+    border:1px solid var(--line); border-radius:2px;
+    padding:2px 4px; text-align:center;
+  }
+  .min-qty input:focus{ border-color:var(--accent); outline:none; }
 
   /* ---------- Service tiles (no photography) ---------- */
   .service-badge{
@@ -549,6 +579,8 @@
     .price-input{ background:none; border:none; padding:0; }
     .price-input input{ font-size:12px; padding:0; }
     .margin-line{ display:none; }
+    .min-qty{ font-size:8px; margin-top:1px; }
+    .min-qty input{ width:22px; padding:0 2px; }
     [contenteditable="true"]{ box-shadow:none !important; }
   }
 </style>
@@ -621,7 +653,7 @@
     <div class="grid" id="grid">
 
       <article class="card" data-id="camiseta">
-        <div class="card-photo zoomable" data-photo-id="camiseta"><span class="card-ref">KW-001</span><img class="main-photo" src="assets/products/camiseta.webp" alt="Camiseta Kairos Wear color crudo con logo bordado" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="camiseta" title="Agregar fotos">+</button></div>
+        <div class="card-photo zoomable" data-photo-id="camiseta"><span class="card-ref">KW-001</span><img class="main-photo" src="assets/products/camiseta.webp" alt="Camiseta Kairos Wear color crudo con logo bordado" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="camiseta" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="camiseta" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="camiseta"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="camiseta">
         <div class="card-body">
@@ -645,6 +677,7 @@
             </div>
             <div class="price-field"><label for="p-camiseta-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-camiseta-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-camiseta-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -652,7 +685,7 @@
       </article>
 
       <article class="card" data-id="jogger">
-        <div class="card-photo zoomable" data-photo-id="jogger"><span class="card-ref">KW-002</span><img class="main-photo" src="assets/products/jogger.webp" alt="Jogger Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="jogger" title="Agregar fotos">+</button></div>
+        <div class="card-photo zoomable" data-photo-id="jogger"><span class="card-ref">KW-002</span><img class="main-photo" src="assets/products/jogger.webp" alt="Jogger Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="jogger" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="jogger" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="jogger"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="jogger">
         <div class="card-body">
@@ -676,6 +709,7 @@
             </div>
             <div class="price-field"><label for="p-jogger-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-jogger-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-jogger-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -683,7 +717,7 @@
       </article>
 
       <article class="card" data-id="hoodie">
-        <div class="card-photo zoomable" data-photo-id="hoodie"><span class="card-ref">KW-003</span><img class="main-photo" src="assets/products/hoodie.webp" alt="Hoodie Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="hoodie" title="Agregar fotos">+</button></div>
+        <div class="card-photo zoomable" data-photo-id="hoodie"><span class="card-ref">KW-003</span><img class="main-photo" src="assets/products/hoodie.webp" alt="Hoodie Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="hoodie" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="hoodie" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="hoodie"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="hoodie">
         <div class="card-body">
@@ -707,6 +741,7 @@
             </div>
             <div class="price-field"><label for="p-hoodie-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-hoodie-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-hoodie-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -714,7 +749,7 @@
       </article>
 
       <article class="card" data-id="chaqueta">
-        <div class="card-photo zoomable" data-photo-id="chaqueta"><span class="card-ref">KW-004</span><img class="main-photo" src="assets/products/chaqueta.webp" alt="Chaqueta de mezclilla Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="chaqueta" title="Agregar fotos">+</button></div>
+        <div class="card-photo zoomable" data-photo-id="chaqueta"><span class="card-ref">KW-004</span><img class="main-photo" src="assets/products/chaqueta.webp" alt="Chaqueta de mezclilla Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="chaqueta" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="chaqueta" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="chaqueta"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="chaqueta">
         <div class="card-body">
@@ -738,6 +773,7 @@
             </div>
             <div class="price-field"><label for="p-chaqueta-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-chaqueta-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-chaqueta-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -745,7 +781,7 @@
       </article>
 
       <article class="card" data-id="cargo">
-        <div class="card-photo zoomable" data-photo-id="cargo"><span class="card-ref">KW-005</span><img class="main-photo" src="assets/products/cargo.webp" alt="Pantalón cargo Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="cargo" title="Agregar fotos">+</button></div>
+        <div class="card-photo zoomable" data-photo-id="cargo"><span class="card-ref">KW-005</span><img class="main-photo" src="assets/products/cargo.webp" alt="Pantalón cargo Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="cargo" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="cargo" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="cargo"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="cargo">
         <div class="card-body">
@@ -769,6 +805,7 @@
             </div>
             <div class="price-field"><label for="p-cargo-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-cargo-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-cargo-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -776,7 +813,7 @@
       </article>
 
       <article class="card" data-id="bolso">
-        <div class="card-photo zoomable" data-photo-id="bolso"><span class="card-ref">KW-006</span><img class="main-photo" src="assets/products/bolso.webp" alt="Morral de mezclilla Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="bolso" title="Agregar fotos">+</button></div>
+        <div class="card-photo zoomable" data-photo-id="bolso"><span class="card-ref">KW-006</span><img class="main-photo" src="assets/products/bolso.webp" alt="Morral de mezclilla Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="bolso" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="bolso" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="bolso"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="bolso">
         <div class="card-body">
@@ -800,6 +837,7 @@
             </div>
             <div class="price-field"><label for="p-bolso-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-bolso-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-bolso-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -807,7 +845,7 @@
       </article>
 
       <article class="card" data-id="cordon">
-        <div class="card-photo zoomable" data-photo-id="cordon"><span class="card-ref">KW-007</span><img class="main-photo" src="assets/products/cordon.webp" alt="Cordón porta-carnet Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="cordon" title="Agregar fotos">+</button></div>
+        <div class="card-photo zoomable" data-photo-id="cordon"><span class="card-ref">KW-007</span><img class="main-photo" src="assets/products/cordon.webp" alt="Cordón porta-carnet Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="cordon" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="cordon" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="cordon"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="cordon">
         <div class="card-body">
@@ -831,6 +869,7 @@
             </div>
             <div class="price-field"><label for="p-cordon-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-cordon-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-cordon-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -859,6 +898,7 @@
             </div>
             <div class="price-field"><label for="p-vinil-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-vinil-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-vinil-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -878,6 +918,7 @@
             </div>
             <div class="price-field"><label for="p-dtf-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-dtf-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-dtf-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -897,6 +938,7 @@
             </div>
             <div class="price-field"><label for="p-uvdtf-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-uvdtf-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-uvdtf-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -916,6 +958,7 @@
             </div>
             <div class="price-field"><label for="p-bordado-mayor">Mayor</label>
               <div class="price-input mayor"><span class="cur">$</span><input id="p-bordado-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-bordado-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
@@ -943,13 +986,14 @@
 <script>
 (function(){
   var STORE_KEY = "kairos-wear-catalog-v3";
-  var store = { prices:{}, texts:{}, gallery:{}, materials:{} };
+  var store = { prices:{}, texts:{}, gallery:{}, materials:{}, removedMain:{} };
   try{
     var saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
     if(saved.prices) store.prices = saved.prices;
     if(saved.texts) store.texts = saved.texts;
     if(saved.gallery) store.gallery = saved.gallery;
     if(saved.materials) store.materials = saved.materials;
+    if(saved.removedMain) store.removedMain = saved.removedMain;
   }catch(e){}
 
   var EDIT_MODE = new URLSearchParams(location.search).get("edit") === "1";
@@ -1015,11 +1059,13 @@
     var id = card.getAttribute("data-id");
     var detalInput = card.querySelector('input[data-role="detal"]');
     var mayorInput = card.querySelector('input[data-role="mayor"]');
+    var minqtyInput = card.querySelector('input[data-role="minqty"]');
     var marginVal = card.querySelector(".m-val");
 
     if(store.prices[id]){
       if(store.prices[id].detal) detalInput.value = store.prices[id].detal;
       if(store.prices[id].mayor) mayorInput.value = store.prices[id].mayor;
+      if(minqtyInput && store.prices[id].minQty) minqtyInput.value = store.prices[id].minQty;
     }
 
     function refreshMargin(){
@@ -1044,13 +1090,14 @@
     }
 
     function persistPrices(){
-      store.prices[id] = { detal: detalInput.value, mayor: mayorInput.value };
+      store.prices[id] = { detal: detalInput.value, mayor: mayorInput.value, minQty: minqtyInput ? minqtyInput.value : "" };
       save();
       updateCount();
     }
 
     detalInput.addEventListener("input", function(){ refreshMargin(); persistPrices(); });
     mayorInput.addEventListener("input", function(){ refreshMargin(); persistPrices(); });
+    if(minqtyInput){ minqtyInput.addEventListener("input", persistPrices); }
     refreshMargin();
   });
 
@@ -1084,7 +1131,7 @@
     var clone = document.documentElement.cloneNode(true);
     clone.querySelectorAll("[contenteditable]").forEach(function(el){ el.removeAttribute("contenteditable"); });
     clone.querySelectorAll("input").forEach(function(el){ el.setAttribute("value", el.value); });
-    clone.querySelectorAll(".photo-add-btn, .gallery-file-input, .edit-flag").forEach(function(el){ el.remove(); });
+    clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag").forEach(function(el){ el.remove(); });
 
     var assetEls = [];
     clone.querySelectorAll('img[src^="assets/"]').forEach(function(el){ assetEls.push({el:el, attr:"src", url:el.getAttribute("src")}); });
@@ -1239,22 +1286,40 @@
 
   document.querySelectorAll(".card-photo.zoomable").forEach(function(photo){
     var id = photo.getAttribute("data-photo-id");
-    var mainSrc = photo.querySelector(".main-photo").src;
+    var mainImgEl = photo.querySelector(".main-photo");
+    var mainSrc = mainImgEl.src;
+    var mainAlt = mainImgEl.alt;
     var strip = document.querySelector('.gallery-strip[data-gallery-for="' + id + '"]');
     var fileInput = document.querySelector('.gallery-file-input[data-for="' + id + '"]');
     var addBtn = photo.querySelector(".photo-add-btn");
+    var removeBtn = photo.querySelector(".photo-remove-btn");
 
-    function allImages(){ return [mainSrc].concat(store.gallery[id] || []); }
+    function effectiveList(){
+      var extras = store.gallery[id] || [];
+      return store.removedMain[id] ? extras.slice() : [mainSrc].concat(extras);
+    }
 
-    function renderStrip(){
+    function render(){
+      var list = effectiveList();
+      if(list.length){
+        photo.classList.remove("empty");
+        mainImgEl.style.display = "";
+        mainImgEl.src = list[0];
+        mainImgEl.alt = mainAlt;
+        if(removeBtn) removeBtn.classList.add("show");
+      } else {
+        photo.classList.add("empty");
+        mainImgEl.style.display = "none";
+        if(removeBtn) removeBtn.classList.remove("show");
+      }
       strip.innerHTML = "";
-      (store.gallery[id] || []).forEach(function(src, i){
+      list.slice(1).forEach(function(src, i){
         var wrap = document.createElement("div");
         wrap.className = "thumb-wrap";
         var img = document.createElement("img");
         img.src = src;
         img.alt = "";
-        img.addEventListener("click", function(){ openLightbox(allImages(), i + 1); });
+        img.addEventListener("click", function(){ openLightbox(effectiveList(), i + 1); });
         wrap.appendChild(img);
         var rm = document.createElement("span");
         rm.className = "thumb-remove";
@@ -1262,20 +1327,35 @@
         rm.title = "Quitar foto";
         rm.addEventListener("click", function(ev){
           ev.stopPropagation();
-          store.gallery[id].splice(i, 1);
+          var extraIndex = store.removedMain[id] ? i + 1 : i;
+          store.gallery[id].splice(extraIndex, 1);
           save();
-          renderStrip();
+          render();
         });
         wrap.appendChild(rm);
         strip.appendChild(wrap);
       });
     }
-    renderStrip();
+    render();
 
     photo.addEventListener("click", function(e){
-      if(e.target.closest(".photo-add-btn")) return;
-      openLightbox(allImages(), 0);
+      if(e.target.closest(".photo-add-btn") || e.target.closest(".photo-remove-btn")) return;
+      var list = effectiveList();
+      if(list.length) openLightbox(list, 0);
     });
+
+    if(removeBtn){
+      removeBtn.addEventListener("click", function(e){
+        e.stopPropagation();
+        if(!store.removedMain[id]){
+          store.removedMain[id] = true;
+        } else if(store.gallery[id] && store.gallery[id].length){
+          store.gallery[id].splice(0, 1);
+        }
+        save();
+        render();
+      });
+    }
 
     if(addBtn && fileInput){
       addBtn.addEventListener("click", function(e){
@@ -1289,7 +1369,7 @@
         Promise.all(files.map(function(f){ return resizeImage(f, 1280, 0.82); })).then(function(dataUrls){
           store.gallery[id] = (store.gallery[id] || []).concat(dataUrls);
           save();
-          renderStrip();
+          render();
         }).catch(function(){});
         fileInput.value = "";
       });
