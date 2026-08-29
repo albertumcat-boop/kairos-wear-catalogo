@@ -546,6 +546,47 @@
   }
   body.edit-mode .edit-flag{ display:inline-flex; }
   .edit-flag .dot{ width:6px; height:6px; border-radius:50%; background:#fff9ef; }
+  .edit-flag #signOutBtn{
+    border:none; background:rgba(255,249,239,0.18); color:#fff9ef;
+    font-size:10.5px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; cursor:pointer; margin-left:2px;
+  }
+  .edit-flag #signOutBtn:hover{ background:rgba(255,249,239,0.32); }
+
+  .login-gate{
+    position:fixed; inset:0; z-index:300;
+    background:rgba(14,11,8,0.72);
+    display:none; align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .login-gate.open{ display:flex; }
+  .login-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:32px 30px;
+    width:100%; max-width:340px;
+    box-shadow:0 24px 60px rgba(0,0,0,0.35);
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .login-mark{ width:32px; height:32px; margin-bottom:2px; }
+  .login-mark img{ width:100%; height:100%; }
+  .login-card h2{
+    font-family:"Fraunces", Georgia, serif; font-weight:500; font-size:19px; margin:0;
+  }
+  .login-card > p{ font-size:12.5px; color:var(--ink-soft); line-height:1.5; margin:0 0 6px; }
+  .login-card label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint);
+    display:flex; flex-direction:column; gap:5px;
+  }
+  .login-card input{
+    font:inherit; font-size:14px; padding:9px 10px;
+    border:1px solid var(--line); border-radius:3px; background:var(--surface-alt); color:var(--ink);
+  }
+  .login-card input:focus{ outline:none; border-color:var(--accent); }
+  .login-error{ font-size:12px; color:#b0402c; min-height:14px; }
+  .login-card .btn{ justify-content:center; margin-top:4px; }
+  .login-cancel{ text-align:center; font-size:12px; color:var(--ink-faint); text-decoration:underline; margin-top:-2px; }
 
   @media print{
     .hero, .sustain, .toolbar, .edit-flag, .lightbox, .photo-add-btn, .gallery-strip, .material-icons, .card-tags{ display:none; }
@@ -981,7 +1022,51 @@
     <div class="lightbox-count" id="lbCount"></div>
   </div>
 
-  <div class="edit-flag"><span class="dot"></span> Modo edición</div>
+  <div class="edit-flag"><span class="dot"></span> Modo edición &mdash; <span id="editUserLabel"></span> <button type="button" id="signOutBtn">Salir</button></div>
+
+  <div class="login-gate" id="loginGate">
+    <form class="login-card" id="loginForm">
+      <div class="login-mark"><img src="assets/logo-mark.png" alt=""></div>
+      <h2>Acceso de edición</h2>
+      <p>Inicia sesión para editar el catálogo. Tus cambios se verán al instante para todos.</p>
+      <label>Correo<input type="email" id="loginEmail" autocomplete="username" required value="editor@kairoswear.app"></label>
+      <label>Contraseña<input type="password" id="loginPassword" autocomplete="current-password" required></label>
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="btn primary" id="loginSubmit">Entrar</button>
+      <a href="." class="login-cancel">Ver sin editar</a>
+    </form>
+  </div>
+
+<script type="module" id="kairosFirebaseBoot">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+  var firebaseConfig = {
+    projectId: "kairos-wear-catalog",
+    appId: "1:81508950109:web:0088d79b74746d53d8adb4",
+    storageBucket: "kairos-wear-catalog.firebasestorage.app",
+    apiKey: "AIzaSyDF4LZOh7h9mAvi2RtjEjH1oS0XOHWk-y0",
+    authDomain: "kairos-wear-catalog.firebaseapp.com",
+    messagingSenderId: "81508950109"
+  };
+
+  var app = initializeApp(firebaseConfig);
+  var db = getFirestore(app);
+  var auth = getAuth(app);
+  var stateRef = doc(db, "catalog", "state");
+
+  setPersistence(auth, browserLocalPersistence).catch(function(){});
+
+  window.__kairosFirebase = {
+    db: db, auth: auth, stateRef: stateRef,
+    onSnapshot: onSnapshot, setDoc: setDoc,
+    signInWithEmailAndPassword: signInWithEmailAndPassword,
+    onAuthStateChanged: onAuthStateChanged,
+    signOut: signOut
+  };
+  window.dispatchEvent(new Event("kairos-firebase-ready"));
+</script>
 
 <script>
 (function(){
@@ -1000,7 +1085,28 @@
   document.body.classList.toggle("edit-mode", EDIT_MODE);
   document.body.classList.toggle("view-only", !EDIT_MODE);
 
-  function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){} }
+  var photoRenderFns = {};
+  var syncTimer = null;
+  var applyingRemote = false;
+  function save(){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){}
+    if(applyingRemote) return;
+    scheduleCloudSync();
+  }
+  function scheduleCloudSync(){
+    var fb = window.__kairosFirebase;
+    if(!fb || !fb.auth.currentUser) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(function(){
+      fb.setDoc(fb.stateRef, {
+        prices: store.prices,
+        texts: store.texts,
+        materials: store.materials,
+        removedMain: store.removedMain,
+        updatedAt: Date.now()
+      }).catch(function(err){ console.error("Kairos sync error:", err); });
+    }, 500);
+  }
   function fmt(n){ return n.toLocaleString("es-VE", {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
   if(!EDIT_MODE){
@@ -1131,7 +1237,9 @@
     var clone = document.documentElement.cloneNode(true);
     clone.querySelectorAll("[contenteditable]").forEach(function(el){ el.removeAttribute("contenteditable"); });
     clone.querySelectorAll("input").forEach(function(el){ el.setAttribute("value", el.value); });
-    clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag").forEach(function(el){ el.remove(); });
+    clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag, .login-gate").forEach(function(el){ el.remove(); });
+    var fbBoot = clone.querySelector("#kairosFirebaseBoot");
+    if(fbBoot) fbBoot.remove();
 
     var assetEls = [];
     clone.querySelectorAll('img[src^="assets/"]').forEach(function(el){ assetEls.push({el:el, attr:"src", url:el.getAttribute("src")}); });
@@ -1210,18 +1318,22 @@
     bolso: ["fibra","eco"],
     cordon: ["poliester","eco"]
   };
+  var materialApplyFns = {};
   document.querySelectorAll(".material-icons").forEach(function(box){
     var id = box.getAttribute("data-materials-for");
-    var active = store.materials[id] || DEFAULT_MATERIALS[id] || [];
+    function currentActive(){ return store.materials[id] || DEFAULT_MATERIALS[id] || []; }
     function applyActive(){
+      var active = currentActive();
       box.querySelectorAll(".mat-icon").forEach(function(btn){
         btn.classList.toggle("active", active.indexOf(btn.getAttribute("data-mat")) !== -1);
       });
     }
     applyActive();
+    materialApplyFns[id] = applyActive;
     box.querySelectorAll(".mat-icon").forEach(function(btn){
       btn.addEventListener("click", function(){
         if(!EDIT_MODE) return;
+        var active = currentActive().slice();
         var mat = btn.getAttribute("data-mat");
         var i = active.indexOf(mat);
         if(i === -1) active.push(mat); else active.splice(i,1);
@@ -1337,6 +1449,7 @@
       });
     }
     render();
+    photoRenderFns[id] = render;
 
     photo.addEventListener("click", function(e){
       if(e.target.closest(".photo-add-btn") || e.target.closest(".photo-remove-btn")) return;
@@ -1375,6 +1488,105 @@
       });
     }
   });
+
+  /* ---- Firebase: live sync + edit-mode login gate ---- */
+  function applyRemoteState(data){
+    if(!data) return;
+    applyingRemote = true;
+    try{
+      if(data.prices){
+        Object.keys(data.prices).forEach(function(id){
+          var p = data.prices[id] || {};
+          store.prices[id] = p;
+          [["detal","detal"],["mayor","mayor"],["minQty","minqty"]].forEach(function(pair){
+            var field = pair[0], role = pair[1];
+            var el = document.getElementById("p-" + id + "-" + role);
+            if(!el || document.activeElement === el) return;
+            var val = p[field] || "";
+            if(el.value !== String(val)){
+              el.value = val;
+              el.dispatchEvent(new Event("input", {bubbles:true}));
+            }
+          });
+        });
+      }
+      if(data.texts){
+        store.texts = data.texts;
+        editableEls.forEach(function(el){
+          var key = el.getAttribute("data-key");
+          if(document.activeElement === el) return;
+          var val = (data.texts[key] !== undefined) ? data.texts[key] : defaults[key];
+          if(el.textContent !== val){ el.textContent = val; }
+        });
+      }
+      if(data.materials){
+        store.materials = data.materials;
+        Object.keys(materialApplyFns).forEach(function(id){ materialApplyFns[id](); });
+      }
+      if(data.removedMain){
+        store.removedMain = data.removedMain;
+        Object.keys(photoRenderFns).forEach(function(id){ photoRenderFns[id](); });
+      }
+      try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){}
+      updateCount();
+    } finally {
+      applyingRemote = false;
+    }
+  }
+
+  var loginForm = document.getElementById("loginForm");
+  if(loginForm){
+    loginForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      var fb = window.__kairosFirebase;
+      if(!fb) return;
+      var email = document.getElementById("loginEmail").value.trim();
+      var pass = document.getElementById("loginPassword").value;
+      var errEl = document.getElementById("loginError");
+      var btn = document.getElementById("loginSubmit");
+      errEl.textContent = "";
+      btn.disabled = true; btn.textContent = "Entrando…";
+      fb.signInWithEmailAndPassword(fb.auth, email, pass).catch(function(){
+        errEl.textContent = "Correo o contraseña incorrectos.";
+      }).finally(function(){
+        btn.disabled = false; btn.textContent = "Entrar";
+      });
+    });
+  }
+
+  var signOutBtn = document.getElementById("signOutBtn");
+  if(signOutBtn){
+    signOutBtn.addEventListener("click", function(){
+      var fb = window.__kairosFirebase;
+      if(fb) fb.signOut(fb.auth);
+    });
+  }
+
+  function initFirebaseSync(){
+    var fb = window.__kairosFirebase;
+    if(!fb) return;
+
+    fb.onSnapshot(fb.stateRef, function(snap){
+      if(snap.metadata && snap.metadata.hasPendingWrites) return;
+      applyRemoteState(snap.data());
+    }, function(err){ console.error("Kairos onSnapshot error:", err); });
+
+    if(EDIT_MODE){
+      var gate = document.getElementById("loginGate");
+      fb.onAuthStateChanged(fb.auth, function(user){
+        if(user){
+          gate.classList.remove("open");
+          var label = document.getElementById("editUserLabel");
+          if(label) label.textContent = user.email;
+        } else {
+          gate.classList.add("open");
+        }
+      });
+    }
+  }
+
+  if(window.__kairosFirebase){ initFirebaseSync(); }
+  else { window.addEventListener("kairos-firebase-ready", initFirebaseSync, {once:true}); }
 })();
 </script>
 </body>
