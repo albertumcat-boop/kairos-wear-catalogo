@@ -425,6 +425,25 @@
   .card-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:-2px; }
   .tag{ font-size:10.5px; letter-spacing:0.03em; color:var(--ink-soft); border:1px solid var(--line); border-radius:2px; padding:3px 7px; }
   .tag.eco{ color:var(--accent-ink); border-color:var(--accent); background:var(--accent-soft); font-weight:500; }
+  .tag{ display:inline-flex; align-items:center; gap:5px; }
+  .tag-remove{
+    display:none; border:none; background:none; padding:0; margin:0;
+    font-size:11px; line-height:1; color:inherit; opacity:0.55; cursor:pointer;
+  }
+  body.edit-mode .tag-remove{ display:inline; }
+  .tag-remove:hover{ opacity:1; }
+  .tag-add-btn{
+    font-size:10.5px; letter-spacing:0.03em; color:var(--ink-faint);
+    border:1px dashed var(--line); border-radius:2px; padding:3px 8px;
+    background:none; cursor:pointer; display:none;
+  }
+  body.edit-mode .tag-add-btn{ display:inline-flex; }
+  .tag-add-btn:hover{ border-color:var(--accent); color:var(--accent-ink); }
+  .tag-add-input{
+    font-family:inherit; font-size:10.5px; width:84px;
+    border:1px solid var(--accent); border-radius:2px; padding:3px 6px;
+    background:var(--surface-alt); color:var(--ink); outline:none;
+  }
 
   .material-icons{ display:flex; flex-wrap:wrap; gap:6px; }
   .mat-icon{ border:none; background:none; padding:0; border-radius:6px; cursor:default; }
@@ -457,19 +476,48 @@
   .margin-line .m-val{ font-family:"IBM Plex Mono", monospace; color:var(--good); font-variant-numeric:tabular-nums; }
   .margin-line .m-val.empty{ color:var(--ink-faint); }
 
+  .stock-line{
+    display:flex; align-items:center; gap:6px;
+    font-size:11.5px; color:var(--ink-soft);
+  }
+  .stock-dot{ width:7px; height:7px; border-radius:50%; background:var(--ink-faint); flex:none; }
+  .stock-line.has-stock .stock-dot{ background:var(--good); }
+  .stock-line.no-stock .stock-dot{ background:#a33d2a; }
+  .stock-line input{
+    width:44px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px; font-variant-numeric:tabular-nums; font-weight:500;
+    color:var(--ink);
+    background:var(--surface-alt);
+    border:1px solid var(--line); border-radius:2px;
+    padding:3px 5px; text-align:center;
+    -moz-appearance:textfield;
+  }
+  .stock-line input::-webkit-outer-spin-button,
+  .stock-line input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  .stock-line input:focus{ border-color:var(--accent); outline:none; }
+  .stock-line.no-stock .stock-status{ color:#a33d2a; font-weight:500; }
+  .stock-line.has-stock .stock-status{ color:var(--good); }
+
   .min-qty{
     display:flex; align-items:center; gap:4px;
     margin-top:5px;
     font-size:10.5px; color:var(--ink-faint);
   }
   .min-qty input{
-    width:34px;
+    width:38px;
     font-family:"IBM Plex Mono", monospace;
     font-size:10.5px; font-variant-numeric:tabular-nums;
     color:var(--ink-soft);
     background:var(--surface-alt);
     border:1px solid var(--line); border-radius:2px;
-    padding:2px 4px; text-align:center;
+    padding:2px 3px; text-align:center;
+    -moz-appearance:textfield;
+  }
+  .min-qty input::-webkit-outer-spin-button,
+  .min-qty input::-webkit-inner-spin-button{
+    -webkit-appearance:none;
+    margin:0;
   }
   .min-qty input:focus{ border-color:var(--accent); outline:none; }
 
@@ -637,6 +685,8 @@
     .margin-line{ display:none; }
     .min-qty{ font-size:8px; margin-top:1px; }
     .min-qty input{ width:22px; padding:0 2px; }
+    .stock-line{ grid-column:1; font-size:9.5px; gap:4px; }
+    .stock-line input{ width:26px; padding:1px 2px; font-size:9.5px; }
     [contenteditable="true"]{ box-shadow:none !important; }
   }
 </style>
@@ -682,8 +732,8 @@
       <div class="brand">
         <div class="brand-mark"><img src="assets/logo-mark.png" alt="Kairos Wear"></div>
         <div class="brand-text">
-          <h1>Kairos Wear</h1>
-          <p>Lista de precios &mdash; interno</p>
+          <h1 contenteditable="true" spellcheck="false" data-key="brand-name">Kairos Wear</h1>
+          <p contenteditable="true" spellcheck="false" data-key="brand-subtitle">Lista de precios &mdash; interno</p>
         </div>
       </div>
       <div class="top-meta" contenteditable="true" spellcheck="false" data-key="top-meta">
@@ -702,8 +752,8 @@
     </div>
 
     <div class="section-head">
-      <h2>Colección</h2>
-      <p>Prendas y accesorios de la línea crudo. Precio al detal y al mayor por pieza.</p>
+      <h2 contenteditable="true" spellcheck="false" data-key="collection-head">Colección</h2>
+      <p contenteditable="true" spellcheck="false" data-key="collection-intro">Prendas y accesorios de la línea crudo. Precio al detal y al mayor por pieza.</p>
     </div>
 
     <div class="grid" id="grid">
@@ -713,7 +763,7 @@
         <div class="gallery-strip" data-gallery-for="camiseta"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="camiseta">
         <div class="card-body">
-          <span class="card-cat">Camisetas</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-camiseta">Camisetas</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-camiseta">Camiseta Oversize Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-camiseta">Camiseta oversize en algodón de tacto pesado, con logo Kairos Wear bordado tono sobre tono y parche en el bajo. Pieza de nuestra línea sostenible: teñida con nuestro proceso Eco Dye de cero vertido de agua residual.</div>
           <div class="card-tags"><span class="tag">Algodón pesado</span><span class="tag">Unisex</span><span class="tag eco">Sostenible</span></div>
@@ -727,6 +777,7 @@
             <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
             <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
           </div>
+          <div class="stock-line" data-stock-for="camiseta"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-camiseta-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
           <div class="price-row">
             <div class="price-field"><label for="p-camiseta-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-camiseta-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -745,7 +796,7 @@
         <div class="gallery-strip" data-gallery-for="jogger"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="jogger">
         <div class="card-body">
-          <span class="card-cat">Pantalones</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-jogger">Pantalones</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-jogger">Jogger Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-jogger">Jogger en felpa suave, cintura elástica con cordón ajustable y puños ribeteados. Confeccionado dentro de nuestra colección eco-friendly, con fibra recuperada y acabado antifluidos que alarga su vida útil.</div>
           <div class="card-tags"><span class="tag">Felpa</span><span class="tag">Cintura elástica</span><span class="tag eco">Sostenible</span></div>
@@ -759,6 +810,7 @@
             <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
             <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
           </div>
+          <div class="stock-line" data-stock-for="jogger"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-jogger-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
           <div class="price-row">
             <div class="price-field"><label for="p-jogger-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-jogger-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -777,7 +829,7 @@
         <div class="gallery-strip" data-gallery-for="hoodie"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="hoodie">
         <div class="card-body">
-          <span class="card-cat">Buzos</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-hoodie">Buzos</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-hoodie">Hoodie Oversize Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-hoodie">Hoodie oversize con capucha de tres piezas y cordones ajustables, bolsillo canguro y cordón de ajuste en el bajo. Felpa de gramaje alto, hecha con fibra reciclada y tinte ecológico como parte de nuestra colección sostenible.</div>
           <div class="card-tags"><span class="tag">Felpa gramaje alto</span><span class="tag">Oversize</span><span class="tag eco">Sostenible</span></div>
@@ -791,6 +843,7 @@
             <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
             <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
           </div>
+          <div class="stock-line" data-stock-for="hoodie"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-hoodie-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
           <div class="price-row">
             <div class="price-field"><label for="p-hoodie-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-hoodie-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -809,7 +862,7 @@
         <div class="gallery-strip" data-gallery-for="chaqueta"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="chaqueta">
         <div class="card-body">
-          <span class="card-cat">Chaquetas</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-chaqueta">Chaquetas</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-chaqueta">Chaqueta Denim Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-chaqueta">Chaqueta trucker en mezclilla cruda con botones metálicos color cobre y doble bolsillo de pecho. Producida bajo nuestro estándar eco-friendly, con huella hídrica reducida frente a un denim convencional.</div>
           <div class="card-tags"><span class="tag">Mezclilla</span><span class="tag">Botones cobre</span><span class="tag eco">Sostenible</span></div>
@@ -823,6 +876,7 @@
             <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
             <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
           </div>
+          <div class="stock-line" data-stock-for="chaqueta"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-chaqueta-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
           <div class="price-row">
             <div class="price-field"><label for="p-chaqueta-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-chaqueta-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -841,7 +895,7 @@
         <div class="gallery-strip" data-gallery-for="cargo"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="cargo">
         <div class="card-body">
-          <span class="card-cat">Pantalones</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-cargo">Pantalones</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-cargo">Cargo Crudo</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-cargo">Pantalón cargo en felpa con bolsillos laterales de fuelle, cintura elástica y cordón. Parte de la colección sostenible Kairos, confeccionado con fibra recuperada y acabado antibacterial.</div>
           <div class="card-tags"><span class="tag">Felpa</span><span class="tag">Bolsillos cargo</span><span class="tag eco">Sostenible</span></div>
@@ -855,6 +909,7 @@
             <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
             <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
           </div>
+          <div class="stock-line" data-stock-for="cargo"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-cargo-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
           <div class="price-row">
             <div class="price-field"><label for="p-cargo-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-cargo-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -873,7 +928,7 @@
         <div class="gallery-strip" data-gallery-for="bolso"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="bolso">
         <div class="card-body">
-          <span class="card-cat">Accesorios</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-bolso">Accesorios</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-bolso">Morral Denim Cordón</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-bolso">Morral tipo saco en mezclilla oscura con cordones blancos trenzados, bolsillo frontal y parche Kairos Wear. Confeccionado con fibra reciclada como parte de nuestro compromiso eco-friendly.</div>
           <div class="card-tags"><span class="tag">Mezclilla</span><span class="tag">Cordón ajustable</span><span class="tag eco">Sostenible</span></div>
@@ -887,6 +942,7 @@
             <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
             <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
           </div>
+          <div class="stock-line" data-stock-for="bolso"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-bolso-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
           <div class="price-row">
             <div class="price-field"><label for="p-bolso-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-bolso-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -905,7 +961,7 @@
         <div class="gallery-strip" data-gallery-for="cordon"></div>
         <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="cordon">
         <div class="card-body">
-          <span class="card-cat">Accesorios</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-cordon">Accesorios</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-cordon">Cordón Porta-Carnet</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-cordon">Cordón tejido en tono crudo con costura central y mosquetón metálico giratorio. Accesorio de nuestra línea sostenible, elaborado con algodón y poliéster recuperado de botellas PET.</div>
           <div class="card-tags"><span class="tag">Cinta tejida</span><span class="tag">Mosquetón metálico</span><span class="tag eco">Sostenible</span></div>
@@ -919,6 +975,7 @@
             <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
             <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
           </div>
+          <div class="stock-line" data-stock-for="cordon"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-cordon-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
           <div class="price-row">
             <div class="price-field"><label for="p-cordon-detal">Detal</label>
               <div class="price-input"><span class="cur">$</span><input id="p-cordon-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
@@ -944,7 +1001,7 @@
       <article class="card" data-id="vinil">
         <div class="card-photo service-badge"><span class="card-ref">SERV-01</span><span class="svc-name">Vinil</span><span class="svc-kind">Corte &amp; planchado</span></div>
         <div class="card-body">
-          <span class="card-cat">Personalización</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-vinil">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-vinil">Vinil Textil</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-vinil">Vinilo termoadhesivo cortado a medida y aplicado con calor. Ideal para diseños de uno o pocos colores, nombres y números. La opción más económica para tirajes cortos.</div>
           <div class="card-tags"><span class="tag">1&ndash;2 colores</span><span class="tag">Tiraje corto</span></div>
@@ -964,7 +1021,7 @@
       <article class="card" data-id="dtf">
         <div class="card-photo service-badge"><span class="card-ref">SERV-02</span><span class="svc-name">DTF</span><span class="svc-kind">Impresión digital</span></div>
         <div class="card-body">
-          <span class="card-cat">Personalización</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-dtf">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-dtf">DTF (Direct to Film)</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-dtf">Transferencia digital a todo color con detalles finos y degradados. Buena resistencia al lavado y flexibilidad, apto para prácticamente cualquier tela.</div>
           <div class="card-tags"><span class="tag">Full color</span><span class="tag">Alta definición</span></div>
@@ -984,7 +1041,7 @@
       <article class="card" data-id="uvdtf">
         <div class="card-photo service-badge"><span class="card-ref">SERV-03</span><span class="svc-name">UV DTF</span><span class="svc-kind">Transferencia UV</span></div>
         <div class="card-body">
-          <span class="card-cat">Personalización</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-uvdtf">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-uvdtf">UV DTF</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-uvdtf">Transferencia con tinta curada por luz UV, acabado brillante y alta resistencia. Se adhiere tanto a textiles como a superficies rígidas (termos, gorras, plástico).</div>
           <div class="card-tags"><span class="tag">Superficies rígidas</span><span class="tag">Acabado brillante</span></div>
@@ -1004,7 +1061,7 @@
       <article class="card" data-id="bordado">
         <div class="card-photo service-badge stitched"><span class="card-ref">SERV-04</span><span class="svc-name">Bordado</span><span class="svc-kind">Hilo industrial</span></div>
         <div class="card-body">
-          <span class="card-cat">Personalización</span>
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-bordado">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-bordado">Bordado</h2>
           <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-bordado">Bordado industrial con hilo, acabado premium con textura y relieve. La opción más duradera, ideal para logos institucionales, gorras y uniformes.</div>
           <div class="card-tags"><span class="tag">Acabado premium</span><span class="tag">Alta durabilidad</span></div>
@@ -1086,7 +1143,7 @@
 <script>
 (function(){
   var STORE_KEY = "kairos-wear-catalog-v3";
-  var store = { prices:{}, texts:{}, gallery:{}, materials:{}, removedMain:{} };
+  var store = { prices:{}, texts:{}, gallery:{}, materials:{}, removedMain:{}, tags:{} };
   try{
     var saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
     if(saved.prices) store.prices = saved.prices;
@@ -1094,6 +1151,7 @@
     if(saved.gallery) store.gallery = saved.gallery;
     if(saved.materials) store.materials = saved.materials;
     if(saved.removedMain) store.removedMain = saved.removedMain;
+    if(saved.tags) store.tags = saved.tags;
   }catch(e){}
 
   var EDIT_MODE = new URLSearchParams(location.search).get("edit") === "1";
@@ -1118,6 +1176,7 @@
         texts: store.texts,
         materials: store.materials,
         removedMain: store.removedMain,
+        tags: store.tags,
         updatedAt: Date.now()
       }).catch(function(err){ console.error("Kairos sync error:", err); });
     }, 500);
@@ -1181,13 +1240,28 @@
     var detalInput = card.querySelector('input[data-role="detal"]');
     var mayorInput = card.querySelector('input[data-role="mayor"]');
     var minqtyInput = card.querySelector('input[data-role="minqty"]');
+    var stockInput = card.querySelector('input[data-role="stock"]');
+    var stockLine = card.querySelector(".stock-line");
+    var stockStatus = stockLine ? stockLine.querySelector(".stock-status") : null;
     var marginVal = card.querySelector(".m-val");
 
     if(store.prices[id]){
       if(store.prices[id].detal) detalInput.value = store.prices[id].detal;
       if(store.prices[id].mayor) mayorInput.value = store.prices[id].mayor;
       if(minqtyInput && store.prices[id].minQty) minqtyInput.value = store.prices[id].minQty;
+      if(stockInput && store.prices[id].stock !== undefined && store.prices[id].stock !== "") stockInput.value = store.prices[id].stock;
     }
+
+    function refreshStock(){
+      if(!stockLine) return;
+      var v = stockInput.value;
+      stockLine.classList.remove("has-stock", "no-stock");
+      if(v === "" ){ if(stockStatus) stockStatus.textContent = ""; return; }
+      var n = parseInt(v, 10);
+      if(n > 0){ stockLine.classList.add("has-stock"); if(stockStatus) stockStatus.textContent = ""; }
+      else { stockLine.classList.add("no-stock"); if(stockStatus) stockStatus.textContent = "Agotado"; }
+    }
+    refreshStock();
 
     function refreshMargin(){
       var d = parseFloat(detalInput.value);
@@ -1211,7 +1285,12 @@
     }
 
     function persistPrices(){
-      store.prices[id] = { detal: detalInput.value, mayor: mayorInput.value, minQty: minqtyInput ? minqtyInput.value : "" };
+      store.prices[id] = {
+        detal: detalInput.value,
+        mayor: mayorInput.value,
+        minQty: minqtyInput ? minqtyInput.value : "",
+        stock: stockInput ? stockInput.value : ""
+      };
       save();
       updateCount();
     }
@@ -1219,6 +1298,7 @@
     detalInput.addEventListener("input", function(){ refreshMargin(); persistPrices(); });
     mayorInput.addEventListener("input", function(){ refreshMargin(); persistPrices(); });
     if(minqtyInput){ minqtyInput.addEventListener("input", persistPrices); }
+    if(stockInput){ stockInput.addEventListener("input", function(){ refreshStock(); persistPrices(); }); }
     refreshMargin();
   });
 
@@ -1357,6 +1437,72 @@
         applyActive();
       });
     });
+  });
+
+  /* ---- editable tags (add / remove per card) ---- */
+  var DEFAULT_TAGS = {};
+  var tagRenderFns = {};
+  document.querySelectorAll(".card-tags").forEach(function(box){
+    var card = box.closest(".card");
+    var id = card.getAttribute("data-id");
+    DEFAULT_TAGS[id] = Array.from(box.querySelectorAll(".tag")).map(function(t){ return t.textContent.trim(); });
+
+    function currentTags(){ return store.tags[id] || DEFAULT_TAGS[id] || []; }
+
+    function renderTags(){
+      var tags = currentTags();
+      box.innerHTML = "";
+      tags.forEach(function(text, i){
+        var span = document.createElement("span");
+        span.className = "tag" + (text.trim().toLowerCase() === "sostenible" ? " eco" : "");
+        span.textContent = text;
+        var rm = document.createElement("button");
+        rm.type = "button";
+        rm.className = "tag-remove";
+        rm.textContent = "×";
+        rm.title = "Quitar etiqueta";
+        rm.addEventListener("click", function(e){
+          e.stopPropagation();
+          var arr = currentTags().slice();
+          arr.splice(i, 1);
+          store.tags[id] = arr;
+          save();
+          renderTags();
+        });
+        span.appendChild(rm);
+        box.appendChild(span);
+      });
+      var addBtn = document.createElement("button");
+      addBtn.type = "button";
+      addBtn.className = "tag-add-btn";
+      addBtn.textContent = "+ Agregar";
+      addBtn.addEventListener("click", function(){
+        var input = document.createElement("input");
+        input.type = "text";
+        input.className = "tag-add-input";
+        input.placeholder = "Nueva etiqueta";
+        box.replaceChild(input, addBtn);
+        input.focus();
+        function commit(){
+          var val = input.value.trim();
+          if(val){
+            var arr = currentTags().slice();
+            arr.push(val);
+            store.tags[id] = arr;
+            save();
+          }
+          renderTags();
+        }
+        input.addEventListener("keydown", function(e){
+          if(e.key === "Enter"){ e.preventDefault(); commit(); }
+          else if(e.key === "Escape"){ renderTags(); }
+        });
+        input.addEventListener("blur", commit);
+      });
+      box.appendChild(addBtn);
+    }
+    renderTags();
+    tagRenderFns[id] = renderTags;
   });
 
   /* ---- extra photos per product + lightbox ---- */
@@ -1513,7 +1659,7 @@
         Object.keys(data.prices).forEach(function(id){
           var p = data.prices[id] || {};
           store.prices[id] = p;
-          [["detal","detal"],["mayor","mayor"],["minQty","minqty"]].forEach(function(pair){
+          [["detal","detal"],["mayor","mayor"],["minQty","minqty"],["stock","stock"]].forEach(function(pair){
             var field = pair[0], role = pair[1];
             var el = document.getElementById("p-" + id + "-" + role);
             if(!el || document.activeElement === el) return;
@@ -1541,6 +1687,10 @@
       if(data.removedMain){
         store.removedMain = data.removedMain;
         Object.keys(photoRenderFns).forEach(function(id){ photoRenderFns[id](); });
+      }
+      if(data.tags){
+        store.tags = data.tags;
+        Object.keys(tagRenderFns).forEach(function(id){ tagRenderFns[id](); });
       }
       try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){}
       updateCount();
