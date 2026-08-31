@@ -87,6 +87,38 @@
   .hero [contenteditable="true"]:hover{ box-shadow:0 0 0 1px rgba(241,234,217,0.35); }
   .hero [contenteditable="true"]:focus{ box-shadow:0 0 0 1px #d9b98a; background:rgba(241,234,217,0.08); }
 
+  /* ---------- Sticky nav ---------- */
+  .site-nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px;
+    background:rgba(14,11,8,0.5);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(241,234,217,0.1);
+  }
+  .nav-brand{
+    display:flex; align-items:center; gap:9px;
+    text-decoration:none; color:#f1ead9;
+  }
+  .nav-brand img{ width:20px; height:20px; }
+  .nav-brand span{
+    font-family:"Fraunces", Georgia, serif; font-weight:500; font-size:15px;
+  }
+  .nav-links{ display:flex; gap:22px; }
+  .nav-links a{
+    color:#e4dcc8; text-decoration:none;
+    font-size:12.5px; letter-spacing:0.03em;
+    opacity:0.82;
+  }
+  .nav-links a:hover{ opacity:1; color:#fff; }
+  @media (max-width:640px){
+    .site-nav{ padding:12px 16px; }
+    .nav-brand span{ display:none; }
+    .nav-links{ gap:14px; }
+    .nav-links a{ font-size:11px; }
+  }
+
   /* ---------- Hero ---------- */
   .hero{
     position:relative;
@@ -328,6 +360,7 @@
   }
   .dot-save{ width:6px;height:6px;border-radius:50%; background:var(--good); flex:none; }
   .toolbar-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  body:not(.edit-mode) #resetBtn{ display:none; }
   .btn{
     font:inherit;
     font-family:"IBM Plex Sans", sans-serif;
@@ -673,6 +706,13 @@
   }
   footer.site .foot-brand{ display:flex; align-items:center; gap:8px; }
   footer.site .foot-brand img{ width:18px; height:18px; }
+  .admin-trigger{
+    border:none; background:none; cursor:pointer;
+    color:var(--ink-faint); font-size:8px; opacity:0.5;
+    padding:6px; line-height:1;
+  }
+  .admin-trigger:hover{ opacity:1; color:var(--accent); }
+  body.edit-mode .admin-trigger{ display:none; }
 
   .lightbox{
     position:fixed; inset:0; z-index:200;
@@ -760,10 +800,13 @@
   .login-card input:focus{ outline:none; border-color:var(--accent); }
   .login-error{ font-size:12px; color:#b0402c; min-height:14px; }
   .login-card .btn{ justify-content:center; margin-top:4px; }
-  .login-cancel{ text-align:center; font-size:12px; color:var(--ink-faint); text-decoration:underline; margin-top:-2px; }
+  .login-cancel{
+    text-align:center; font-size:12px; color:var(--ink-faint); text-decoration:underline; margin-top:-2px;
+    border:none; background:none; cursor:pointer; font-family:inherit; padding:4px;
+  }
 
   @media print{
-    .hero, .sustain, .toolbar, .edit-flag, .login-gate, .lightbox, .photo-add-btn, .photo-remove-btn, .empty-label, .gallery-strip, .material-icons, .card-tags{ display:none; }
+    .site-nav, .hero, .sustain, .toolbar, .edit-flag, .login-gate, .lightbox, .cart-fab, .cart-drawer, .cart-overlay, .photo-add-btn, .photo-remove-btn, .empty-label, .gallery-strip, .material-icons, .card-tags{ display:none; }
     body{ background:#fff; font-size:11px; }
     .wrap{ padding:0 6px; }
     header.top{ padding:10px 0; margin-bottom:10px; }
@@ -804,7 +847,17 @@
 </head>
 <body>
 
-  <section class="hero">
+  <nav class="site-nav">
+    <a href="#inicio" class="nav-brand"><img src="assets/logo-mark.png" alt=""><span>Kairos Wear</span></a>
+    <div class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#catalogo">Colección</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#sostenibilidad">Impacto</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="inicio">
     <video autoplay muted loop playsinline id="heroVideo">
       <source src="assets/hero-bg.mp4" type="video/mp4">
     </video>
@@ -878,14 +931,13 @@
     <div class="toolbar">
       <div class="toolbar-hint"><span class="dot-save"></span> Los cambios se guardan solos en este navegador</div>
       <div class="toolbar-actions">
-        <button class="btn" id="shareBtn" type="button">Copiar enlace público</button>
         <button class="btn" id="resetBtn" type="button">Restablecer textos</button>
         <button class="btn" id="printBtn" type="button">Imprimir</button>
         <button class="btn primary" id="downloadBtn" type="button">Descargar catálogo (.html)</button>
       </div>
     </div>
 
-    <div class="section-head">
+    <div class="section-head" id="catalogo">
       <h2 contenteditable="true" spellcheck="false" data-key="collection-head">Colección</h2>
       <p contenteditable="true" spellcheck="false" data-key="collection-intro">Prendas y accesorios de la línea crudo. Precio al detal y al mayor por pieza.</p>
     </div>
@@ -1137,7 +1189,7 @@
 
     </div>
 
-    <div class="section-head">
+    <div class="section-head" id="servicios">
       <h2 contenteditable="true" spellcheck="false" data-key="services-head">Servicios de personalización</h2>
       <p contenteditable="true" spellcheck="false" data-key="services-intro">Llevamos tus diseños a la prenda. Cuatro técnicas según acabado, cantidad y presupuesto. Precio por unidad aplicado.</p>
     </div>
@@ -1233,6 +1285,7 @@
     <footer class="site">
       <div class="foot-brand"><img src="assets/logo-mark.png" alt="Kairos Wear"><span contenteditable="true" spellcheck="false" data-key="footer-credit">Kairos Wear &mdash; catálogo de referencia interno</span></div>
       <span id="countInfo">0 de 11 ítems con precio</span>
+      <button type="button" id="adminTrigger" class="admin-trigger" title="Acceso administrador">&#9679;</button>
     </footer>
   </div>
 
@@ -1276,7 +1329,7 @@
       <label>Contraseña<input type="password" id="loginPassword" autocomplete="current-password" required></label>
       <div class="login-error" id="loginError"></div>
       <button type="submit" class="btn primary" id="loginSubmit">Entrar</button>
-      <a href="." class="login-cancel">Ver sin editar</a>
+      <button type="button" id="loginCancel" class="login-cancel">Cancelar</button>
     </form>
   </div>
 
@@ -1327,9 +1380,34 @@
     if(saved.settings) store.settings = saved.settings;
   }catch(e){}
 
-  var EDIT_MODE = new URLSearchParams(location.search).get("edit") === "1";
-  document.body.classList.toggle("edit-mode", EDIT_MODE);
-  document.body.classList.toggle("view-only", !EDIT_MODE);
+  var EDIT_MODE = false;
+  var editableEls = document.querySelectorAll('[contenteditable="true"][data-key]');
+  var defaults = {};
+  editableEls.forEach(function(el){ defaults[el.getAttribute("data-key")] = el.textContent; });
+
+  function setEditMode(isEditor){
+    EDIT_MODE = isEditor;
+    document.body.classList.toggle("edit-mode", isEditor);
+    document.body.classList.toggle("view-only", !isEditor);
+    editableEls.forEach(function(el){
+      if(isEditor){ el.setAttribute("contenteditable", "true"); }
+      else{ el.removeAttribute("contenteditable"); }
+    });
+    document.querySelectorAll('input[data-role]').forEach(function(el){
+      el.readOnly = !isEditor; el.tabIndex = isEditor ? 0 : -1;
+    });
+    var hint = document.querySelector(".toolbar-hint");
+    if(hint){ hint.innerHTML = isEditor ? '<span class="dot-save"></span> Los cambios se guardan solos en este navegador' : 'Vista de solo lectura'; }
+    var topMeta = document.querySelector(".top-meta");
+    if(topMeta){
+      topMeta.innerHTML = isEditor
+        ? 'Escribe el <strong>precio al detal</strong> y el <strong>precio al mayor</strong>. Haz clic sobre cualquier texto de la página para editarlo.'
+        : 'Catálogo de referencia. Los precios y textos están fijados por Kairos Wear.';
+    }
+    var gate = document.getElementById("loginGate");
+    if(isEditor && gate){ gate.classList.remove("open"); }
+  }
+  setEditMode(false);
 
   var photoRenderFns = {};
   var syncTimer = null;
@@ -1357,22 +1435,9 @@
   }
   function fmt(n){ return n.toLocaleString("es-VE", {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
-  if(!EDIT_MODE){
-    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){ el.removeAttribute("contenteditable"); });
-    document.querySelectorAll('input[data-role]').forEach(function(el){ el.readOnly = true; el.tabIndex = -1; });
-    var rb = document.getElementById("resetBtn"); if(rb) rb.remove();
-    var hint = document.querySelector(".toolbar-hint");
-    if(hint) hint.innerHTML = 'Vista de solo lectura';
-    var topMeta = document.querySelector(".top-meta");
-    if(topMeta) topMeta.innerHTML = 'Catálogo de referencia. Los precios y textos están fijados por Kairos Wear.';
-  }
-
   /* ---- editable text (site-wide) ---- */
-  var editableEls = document.querySelectorAll('[contenteditable="true"][data-key]');
-  var defaults = {};
   editableEls.forEach(function(el){
     var key = el.getAttribute("data-key");
-    defaults[key] = el.textContent;
     if(store.texts[key] !== undefined){ el.textContent = store.texts[key]; }
     el.addEventListener("input", function(){
       var text = el.textContent;
@@ -1506,7 +1571,7 @@
     var clone = document.documentElement.cloneNode(true);
     clone.querySelectorAll("[contenteditable]").forEach(function(el){ el.removeAttribute("contenteditable"); });
     clone.querySelectorAll("input").forEach(function(el){ el.setAttribute("value", el.value); });
-    clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag, .login-gate").forEach(function(el){ el.remove(); });
+    clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag, .login-gate, .admin-trigger").forEach(function(el){ el.remove(); });
     var fbBoot = clone.querySelector("#kairosFirebaseBoot");
     if(fbBoot) fbBoot.remove();
 
@@ -1560,22 +1625,6 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var heroVideo = document.getElementById("heroVideo");
   if(reduceMotion && heroVideo){ heroVideo.pause(); }
-
-  /* ---- copy public (view-only) link ---- */
-  var shareBtn = document.getElementById("shareBtn");
-  if(shareBtn){
-    if(!EDIT_MODE){ shareBtn.remove(); }
-    else{
-      shareBtn.addEventListener("click", function(){
-        var publicUrl = location.origin + location.pathname;
-        var restore = shareBtn.textContent;
-        function done(ok){ shareBtn.textContent = ok ? "Enlace copiado" : publicUrl; setTimeout(function(){ shareBtn.textContent = restore; }, 1800); }
-        if(navigator.clipboard && navigator.clipboard.writeText){
-          navigator.clipboard.writeText(publicUrl).then(function(){ done(true); }, function(){ done(false); });
-        } else { done(false); }
-      });
-    }
-  }
 
   /* ---- per-product material icons ---- */
   var DEFAULT_MATERIALS = {
@@ -1917,22 +1966,33 @@
       applyRemoteState(snap.data());
     }, function(err){ console.error("Kairos onSnapshot error:", err); });
 
-    if(EDIT_MODE){
-      var gate = document.getElementById("loginGate");
-      fb.onAuthStateChanged(fb.auth, function(user){
-        if(user){
-          gate.classList.remove("open");
-          var label = document.getElementById("editUserLabel");
-          if(label) label.textContent = user.email;
-        } else {
-          gate.classList.add("open");
-        }
-      });
-    }
+    fb.onAuthStateChanged(fb.auth, function(user){
+      if(user){
+        var label = document.getElementById("editUserLabel");
+        if(label) label.textContent = user.email;
+        setEditMode(true);
+      } else {
+        setEditMode(false);
+      }
+    });
   }
 
   if(window.__kairosFirebase){ initFirebaseSync(); }
   else { window.addEventListener("kairos-firebase-ready", initFirebaseSync, {once:true}); }
+
+  /* ---- admin access trigger (opens login, no separate URL needed) ---- */
+  var adminTriggerBtn = document.getElementById("adminTrigger");
+  var loginGateEl = document.getElementById("loginGate");
+  if(adminTriggerBtn && loginGateEl){
+    adminTriggerBtn.addEventListener("click", function(){ loginGateEl.classList.add("open"); });
+  }
+  var loginCancelBtn = document.getElementById("loginCancel");
+  if(loginCancelBtn && loginGateEl){
+    loginCancelBtn.addEventListener("click", function(e){
+      e.preventDefault();
+      loginGateEl.classList.remove("open");
+    });
+  }
 
   /* ---- WhatsApp order number (admin-configured, synced) ---- */
   var cartWaNumberEl = document.getElementById("cartWaNumber");
