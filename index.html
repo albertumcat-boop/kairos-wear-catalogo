@@ -476,6 +476,101 @@
   .margin-line .m-val{ font-family:"IBM Plex Mono", monospace; color:var(--good); font-variant-numeric:tabular-nums; }
   .margin-line .m-val.empty{ color:var(--ink-faint); }
 
+  /* ---------- Sizes + add to cart ---------- */
+  .size-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+  .size-chip{
+    min-width:34px; padding:6px 8px;
+    font-family:"IBM Plex Mono", monospace; font-size:11.5px; font-weight:500;
+    border:1px solid var(--line); border-radius:2px; background:var(--surface);
+    color:var(--ink-soft); cursor:pointer;
+  }
+  .size-chip:hover{ border-color:var(--accent); color:var(--accent-ink); }
+  .size-chip.selected{ background:var(--accent); border-color:var(--accent); color:#fff9ef; }
+  .add-cart-btn{
+    margin-top:8px;
+    width:100%;
+    font:inherit; font-size:13px; font-weight:600; letter-spacing:0.02em;
+    padding:10px 14px;
+    border:1px solid var(--accent); border-radius:2px;
+    background:var(--accent); color:#fff9ef;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    transition:opacity .15s ease;
+  }
+  .add-cart-btn:hover{ opacity:0.88; }
+  .add-cart-btn:disabled{ background:var(--surface-alt); border-color:var(--line); color:var(--ink-faint); cursor:not-allowed; }
+  .add-cart-btn.added{ background:var(--good); border-color:var(--good); }
+
+  .cart-fab{
+    position:fixed; left:14px; bottom:14px; z-index:60;
+    background:var(--ink); color:#fff9ef;
+    border:none; border-radius:999px;
+    padding:11px 16px;
+    font:inherit; font-size:13px; font-weight:600;
+    display:flex; align-items:center; gap:8px;
+    cursor:pointer; box-shadow:var(--shadow);
+  }
+  .cart-fab:hover{ opacity:0.9; }
+  .cart-fab .cart-count{
+    background:var(--accent); color:#fff9ef;
+    min-width:18px; height:18px; border-radius:999px;
+    font-size:10.5px; font-weight:700;
+    display:none; align-items:center; justify-content:center; padding:0 4px;
+  }
+  .cart-fab .cart-count.show{ display:inline-flex; }
+
+  .cart-overlay{
+    position:fixed; inset:0; z-index:210;
+    background:rgba(14,11,8,0.5);
+    display:none;
+  }
+  .cart-overlay.open{ display:block; }
+  .cart-drawer{
+    position:fixed; top:0; right:0; bottom:0; z-index:211;
+    width:100%; max-width:400px;
+    background:var(--surface);
+    box-shadow:-16px 0 40px rgba(0,0,0,0.2);
+    display:flex; flex-direction:column;
+    transform:translateX(100%);
+    transition:transform .25s ease;
+  }
+  .cart-drawer.open{ transform:translateX(0); }
+  .cart-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 20px 16px; border-bottom:1px solid var(--line);
+  }
+  .cart-head h2{ font-family:"Fraunces", Georgia, serif; font-weight:500; font-size:19px; margin:0; }
+  .cart-close{ border:none; background:none; font-size:22px; color:var(--ink-soft); cursor:pointer; line-height:1; }
+  .cart-items{ flex:1; overflow-y:auto; padding:12px 20px; display:flex; flex-direction:column; gap:14px; }
+  .cart-empty{ color:var(--ink-faint); font-size:13.5px; text-align:center; padding:40px 0; }
+  .cart-item{ display:flex; gap:12px; align-items:center; }
+  .cart-item img{ width:52px; height:52px; object-fit:cover; border-radius:3px; background:var(--card-photo); flex:none; }
+  .cart-item-info{ flex:1; min-width:0; }
+  .cart-item-name{ font-size:13px; font-weight:500; color:var(--ink); }
+  .cart-item-meta{ font-size:11.5px; color:var(--ink-faint); margin-top:1px; }
+  .cart-item-price{ font-family:"IBM Plex Mono", monospace; font-size:12.5px; color:var(--ink-soft); margin-top:3px; }
+  .cart-qty{ display:flex; align-items:center; gap:6px; }
+  .cart-qty button{
+    width:22px; height:22px; border-radius:50%; border:1px solid var(--line); background:var(--surface-alt);
+    color:var(--ink-soft); cursor:pointer; font-size:13px; line-height:1;
+  }
+  .cart-qty span{ font-family:"IBM Plex Mono", monospace; font-size:12.5px; min-width:16px; text-align:center; }
+  .cart-item-remove{ border:none; background:none; color:var(--ink-faint); font-size:15px; cursor:pointer; margin-left:4px; }
+  .cart-item-remove:hover{ color:#a33d2a; }
+  .cart-foot{ border-top:1px solid var(--line); padding:16px 20px 20px; display:flex; flex-direction:column; gap:10px; }
+  .cart-total{ display:flex; justify-content:space-between; font-size:14px; font-weight:600; }
+  .cart-total .cart-total-val{ font-family:"IBM Plex Mono", monospace; }
+  .cart-wa-field{ display:flex; flex-direction:column; gap:3px; }
+  .cart-wa-field label{ font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); }
+  .cart-wa-field input{ font:inherit; font-size:12.5px; padding:7px 9px; border:1px solid var(--line); border-radius:2px; background:var(--surface-alt); color:var(--ink); }
+  .cart-wa-btn{
+    width:100%; padding:12px; border:none; border-radius:2px;
+    background:#25d366; color:#fff; font:inherit; font-size:14px; font-weight:600;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .cart-wa-btn:hover{ opacity:0.92; }
+  .cart-wa-btn:disabled{ background:var(--surface-alt); color:var(--ink-faint); cursor:not-allowed; }
+
   .stock-line{
     display:flex; align-items:center; gap:6px;
     font-size:11.5px; color:var(--ink-soft);
@@ -788,6 +883,8 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <div class="size-row" data-sizes-for="camiseta"><button type="button" class="size-chip" data-size="S">S</button><button type="button" class="size-chip" data-size="M">M</button><button type="button" class="size-chip" data-size="L">L</button><button type="button" class="size-chip" data-size="XL">XL</button></div>
+          <button type="button" class="add-cart-btn" data-add-cart="camiseta">Agregar al carrito</button>
         </div>
       </article>
 
@@ -821,6 +918,8 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <div class="size-row" data-sizes-for="jogger"><button type="button" class="size-chip" data-size="S">S</button><button type="button" class="size-chip" data-size="M">M</button><button type="button" class="size-chip" data-size="L">L</button><button type="button" class="size-chip" data-size="XL">XL</button></div>
+          <button type="button" class="add-cart-btn" data-add-cart="jogger">Agregar al carrito</button>
         </div>
       </article>
 
@@ -854,6 +953,8 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <div class="size-row" data-sizes-for="hoodie"><button type="button" class="size-chip" data-size="S">S</button><button type="button" class="size-chip" data-size="M">M</button><button type="button" class="size-chip" data-size="L">L</button><button type="button" class="size-chip" data-size="XL">XL</button></div>
+          <button type="button" class="add-cart-btn" data-add-cart="hoodie">Agregar al carrito</button>
         </div>
       </article>
 
@@ -887,6 +988,8 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <div class="size-row" data-sizes-for="chaqueta"><button type="button" class="size-chip" data-size="S">S</button><button type="button" class="size-chip" data-size="M">M</button><button type="button" class="size-chip" data-size="L">L</button><button type="button" class="size-chip" data-size="XL">XL</button></div>
+          <button type="button" class="add-cart-btn" data-add-cart="chaqueta">Agregar al carrito</button>
         </div>
       </article>
 
@@ -920,6 +1023,8 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <div class="size-row" data-sizes-for="cargo"><button type="button" class="size-chip" data-size="S">S</button><button type="button" class="size-chip" data-size="M">M</button><button type="button" class="size-chip" data-size="L">L</button><button type="button" class="size-chip" data-size="XL">XL</button></div>
+          <button type="button" class="add-cart-btn" data-add-cart="cargo">Agregar al carrito</button>
         </div>
       </article>
 
@@ -953,6 +1058,7 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <button type="button" class="add-cart-btn" data-add-cart="bolso">Agregar al carrito</button>
         </div>
       </article>
 
@@ -986,6 +1092,7 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <button type="button" class="add-cart-btn" data-add-cart="cordon">Agregar al carrito</button>
         </div>
       </article>
 
@@ -1015,6 +1122,7 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <button type="button" class="add-cart-btn" data-add-cart="vinil">Agregar al carrito</button>
         </div>
       </article>
 
@@ -1035,6 +1143,7 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <button type="button" class="add-cart-btn" data-add-cart="dtf">Agregar al carrito</button>
         </div>
       </article>
 
@@ -1055,6 +1164,7 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <button type="button" class="add-cart-btn" data-add-cart="uvdtf">Agregar al carrito</button>
         </div>
       </article>
 
@@ -1075,6 +1185,7 @@
             </div>
             <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
           </div>
+          <button type="button" class="add-cart-btn" data-add-cart="bordado">Agregar al carrito</button>
         </div>
       </article>
 
@@ -1096,6 +1207,27 @@
 
   <div class="edit-flag"><span class="dot"></span> Modo edición &mdash; <span id="editUserLabel"></span> <button type="button" id="signOutBtn">Salir</button></div>
 
+  <button type="button" class="cart-fab" id="cartFab">
+    <span>Carrito</span><span class="cart-count" id="cartCount">0</span>
+  </button>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-head">
+      <h2>Tu pedido</h2>
+      <button type="button" class="cart-close" id="cartClose" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="cart-total"><span>Total</span><span class="cart-total-val" id="cartTotal">$0.00</span></div>
+      <div class="cart-wa-field">
+        <label for="cartWaNumber">Número de WhatsApp para pedidos (solo dígitos, con código de país)</label>
+        <input type="text" id="cartWaNumber" data-key="whatsapp-number" inputmode="numeric" placeholder="584121234567" value="584121234567">
+      </div>
+      <button type="button" class="cart-wa-btn" id="cartWaBtn">Enviar pedido por WhatsApp</button>
+    </div>
+  </aside>
+
   <div class="login-gate" id="loginGate">
     <form class="login-card" id="loginForm">
       <div class="login-mark"><img src="assets/logo-mark.png" alt=""></div>
@@ -1111,7 +1243,7 @@
 
 <script type="module" id="kairosFirebaseBoot">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-  import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getFirestore, doc, collection, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
   var firebaseConfig = {
@@ -1132,6 +1264,7 @@
 
   window.__kairosFirebase = {
     db: db, auth: auth, stateRef: stateRef,
+    doc: doc, collection: collection,
     onSnapshot: onSnapshot, setDoc: setDoc,
     signInWithEmailAndPassword: signInWithEmailAndPassword,
     onAuthStateChanged: onAuthStateChanged,
@@ -1143,7 +1276,7 @@
 <script>
 (function(){
   var STORE_KEY = "kairos-wear-catalog-v3";
-  var store = { prices:{}, texts:{}, gallery:{}, materials:{}, removedMain:{}, tags:{} };
+  var store = { prices:{}, texts:{}, gallery:{}, materials:{}, removedMain:{}, tags:{}, settings:{} };
   try{
     var saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
     if(saved.prices) store.prices = saved.prices;
@@ -1152,6 +1285,7 @@
     if(saved.materials) store.materials = saved.materials;
     if(saved.removedMain) store.removedMain = saved.removedMain;
     if(saved.tags) store.tags = saved.tags;
+    if(saved.settings) store.settings = saved.settings;
   }catch(e){}
 
   var EDIT_MODE = new URLSearchParams(location.search).get("edit") === "1";
@@ -1177,6 +1311,7 @@
         materials: store.materials,
         removedMain: store.removedMain,
         tags: store.tags,
+        settings: store.settings,
         updatedAt: Date.now()
       }).catch(function(err){ console.error("Kairos sync error:", err); });
     }, 500);
@@ -1692,6 +1827,13 @@
         store.tags = data.tags;
         Object.keys(tagRenderFns).forEach(function(id){ tagRenderFns[id](); });
       }
+      if(data.settings){
+        store.settings = data.settings;
+        var waEl = document.getElementById("cartWaNumber");
+        if(waEl && document.activeElement !== waEl && data.settings.waNumber){
+          waEl.value = data.settings.waNumber;
+        }
+      }
       try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){}
       updateCount();
     } finally {
@@ -1752,6 +1894,211 @@
 
   if(window.__kairosFirebase){ initFirebaseSync(); }
   else { window.addEventListener("kairos-firebase-ready", initFirebaseSync, {once:true}); }
+
+  /* ---- WhatsApp order number (admin-configured, synced) ---- */
+  var cartWaNumberEl = document.getElementById("cartWaNumber");
+  if(cartWaNumberEl){
+    if(store.settings.waNumber){ cartWaNumberEl.value = store.settings.waNumber; }
+    cartWaNumberEl.addEventListener("input", function(){
+      store.settings.waNumber = cartWaNumberEl.value;
+      save();
+    });
+  }
+
+  /* ---- Shopping cart (per-visitor, not synced) ---- */
+  var CART_KEY = "kairos-wear-cart-v1";
+  var cart = [];
+  try{ cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); }catch(e){ cart = []; }
+  function saveCart(){ try{ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }catch(e){} }
+
+  var selectedSize = {};
+
+  document.querySelectorAll(".size-row").forEach(function(row){
+    var pid = row.getAttribute("data-sizes-for");
+    row.querySelectorAll(".size-chip").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        row.querySelectorAll(".size-chip").forEach(function(c){ c.classList.remove("selected"); });
+        chip.classList.add("selected");
+        selectedSize[pid] = chip.getAttribute("data-size");
+      });
+    });
+  });
+
+  function cartCurrency(n){ return "$" + n.toLocaleString("es-VE", {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+  function updateCartBadge(){
+    var count = cart.reduce(function(sum, it){ return sum + it.qty; }, 0);
+    var badge = document.getElementById("cartCount");
+    if(!badge) return;
+    badge.textContent = String(count);
+    badge.classList.toggle("show", count > 0);
+  }
+
+  function renderCartDrawer(){
+    var itemsEl = document.getElementById("cartItems");
+    var totalEl = document.getElementById("cartTotal");
+    var waBtn = document.getElementById("cartWaBtn");
+    if(!itemsEl) return;
+    itemsEl.innerHTML = "";
+    if(!cart.length){
+      itemsEl.innerHTML = '<p class="cart-empty">Tu carrito esta vacio.</p>';
+      if(totalEl) totalEl.textContent = cartCurrency(0);
+      if(waBtn) waBtn.disabled = true;
+      updateCartBadge();
+      return;
+    }
+    if(waBtn) waBtn.disabled = false;
+    var total = 0;
+    cart.forEach(function(item, i){
+      total += item.price * item.qty;
+      var row = document.createElement("div");
+      row.className = "cart-item";
+      var img = document.createElement("img");
+      img.src = item.img; img.alt = "";
+      row.appendChild(img);
+      var info = document.createElement("div");
+      info.className = "cart-item-info";
+      var nameEl = document.createElement("div");
+      nameEl.className = "cart-item-name";
+      nameEl.textContent = item.name;
+      info.appendChild(nameEl);
+      if(item.size){
+        var metaEl = document.createElement("div");
+        metaEl.className = "cart-item-meta";
+        metaEl.textContent = "Talla " + item.size;
+        info.appendChild(metaEl);
+      }
+      var priceEl = document.createElement("div");
+      priceEl.className = "cart-item-price";
+      priceEl.textContent = cartCurrency(item.price) + " c/u";
+      info.appendChild(priceEl);
+      row.appendChild(info);
+
+      var qtyBox = document.createElement("div");
+      qtyBox.className = "cart-qty";
+      var minus = document.createElement("button");
+      minus.type = "button"; minus.textContent = "-";
+      minus.addEventListener("click", function(){
+        item.qty = Math.max(1, item.qty - 1);
+        saveCart(); renderCartDrawer();
+      });
+      var qtySpan = document.createElement("span");
+      qtySpan.textContent = String(item.qty);
+      var plus = document.createElement("button");
+      plus.type = "button"; plus.textContent = "+";
+      plus.addEventListener("click", function(){
+        item.qty += 1;
+        saveCart(); renderCartDrawer();
+      });
+      qtyBox.appendChild(minus); qtyBox.appendChild(qtySpan); qtyBox.appendChild(plus);
+      row.appendChild(qtyBox);
+
+      var rm = document.createElement("button");
+      rm.type = "button"; rm.className = "cart-item-remove"; rm.textContent = "×";
+      rm.title = "Quitar";
+      rm.addEventListener("click", function(){
+        cart.splice(i, 1);
+        saveCart(); renderCartDrawer();
+      });
+      row.appendChild(rm);
+
+      itemsEl.appendChild(row);
+    });
+    if(totalEl) totalEl.textContent = cartCurrency(total);
+    updateCartBadge();
+  }
+  renderCartDrawer();
+
+  document.querySelectorAll("[data-add-cart]").forEach(function(btn){
+    var pid = btn.getAttribute("data-add-cart");
+    btn.addEventListener("click", function(){
+      var card = btn.closest(".card");
+      var priceInput = document.getElementById("p-" + pid + "-detal");
+      var price = priceInput ? parseFloat(priceInput.value) : NaN;
+      if(!price || price <= 0){
+        alert("Este producto todavia no tiene precio al detal configurado.");
+        return;
+      }
+      var stockInput = document.getElementById("p-" + pid + "-stock");
+      if(stockInput && stockInput.value !== "" && parseInt(stockInput.value, 10) === 0){
+        alert("Este producto esta agotado.");
+        return;
+      }
+      var sizeRow = card.querySelector(".size-row");
+      var size = "";
+      if(sizeRow){
+        size = selectedSize[pid] || "";
+        if(!size){
+          alert("Selecciona una talla antes de agregar al carrito.");
+          return;
+        }
+      }
+      var nameEl = card.querySelector(".card-title");
+      var name = nameEl ? nameEl.textContent.trim() : pid;
+      var imgEl = card.querySelector(".main-photo") || card.querySelector(".service-badge");
+      var imgSrc = imgEl && imgEl.tagName === "IMG" ? imgEl.src : "assets/logo-mark.png";
+
+      var existing = cart.find(function(it){ return it.id === pid && it.size === size; });
+      if(existing){ existing.qty += 1; }
+      else { cart.push({ id: pid, name: name, size: size, price: price, img: imgSrc, qty: 1 }); }
+      saveCart(); renderCartDrawer();
+
+      btn.classList.add("added");
+      var original = btn.textContent;
+      btn.textContent = "Agregado";
+      setTimeout(function(){ btn.textContent = original; btn.classList.remove("added"); }, 1200);
+    });
+  });
+
+  var cartFab = document.getElementById("cartFab");
+  var cartOverlay = document.getElementById("cartOverlay");
+  var cartDrawer = document.getElementById("cartDrawer");
+  function openCartDrawer(){ cartOverlay.classList.add("open"); cartDrawer.classList.add("open"); }
+  function closeCartDrawer(){ cartOverlay.classList.remove("open"); cartDrawer.classList.remove("open"); }
+  if(cartFab) cartFab.addEventListener("click", openCartDrawer);
+  var cartCloseBtn = document.getElementById("cartClose");
+  if(cartCloseBtn) cartCloseBtn.addEventListener("click", closeCartDrawer);
+  if(cartOverlay) cartOverlay.addEventListener("click", closeCartDrawer);
+
+  var cartWaBtn = document.getElementById("cartWaBtn");
+  if(cartWaBtn){
+    cartWaBtn.addEventListener("click", function(){
+      if(!cart.length) return;
+      var digits = (cartWaNumberEl ? cartWaNumberEl.value : "").replace(/\D/g, "");
+      if(!digits){
+        alert("Falta configurar el numero de WhatsApp para pedidos.");
+        return;
+      }
+      var lines = ["Pedido Kairos Wear:", ""];
+      var total = 0;
+      cart.forEach(function(item){
+        total += item.price * item.qty;
+        var sizePart = item.size ? " (talla " + item.size + ")" : "";
+        lines.push(item.qty + "x " + item.name + sizePart + " - " + cartCurrency(item.price * item.qty));
+      });
+      lines.push("");
+      lines.push("Total: " + cartCurrency(total));
+      var message = lines.join("\n");
+
+      var fb = window.__kairosFirebase;
+      if(fb && fb.db){
+        var orderRef = fb.doc(fb.collection(fb.db, "pedidos"));
+        fb.setDoc(orderRef, {
+          items: cart.map(function(it){ return { id: it.id, name: it.name, size: it.size, price: it.price, qty: it.qty }; }),
+          total: total,
+          waNumber: digits,
+          status: "pendiente",
+          createdAt: Date.now()
+        }).catch(function(err){ console.error("Kairos order save error:", err); });
+      }
+
+      window.open("https://wa.me/" + digits + "?text=" + encodeURIComponent(message), "_blank");
+      cart = [];
+      saveCart();
+      renderCartDrawer();
+      closeCartDrawer();
+    });
+  }
 })();
 </script>
 </body>
