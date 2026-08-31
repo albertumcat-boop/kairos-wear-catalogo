@@ -224,6 +224,22 @@
     grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
     gap:16px 22px;
   }
+
+  .impact-stats{ margin-top:38px; padding-top:30px; border-top:1px solid var(--line); }
+  .impact-stats > h3{
+    font-family:"Fraunces", Georgia, serif; font-weight:500; font-size:15px;
+    text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+  .impact-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:20px 24px; }
+  .impact-tile{ display:flex; flex-direction:column; gap:4px; }
+  .impact-num{
+    font-family:"IBM Plex Mono", monospace; font-weight:600;
+    font-size:clamp(26px, 3vw, 34px); color:var(--accent-ink);
+    font-variant-numeric:tabular-nums; line-height:1;
+  }
+  .impact-label{ font-size:12px; line-height:1.4; color:var(--ink-soft); max-width:22ch; }
+  .impact-note{ font-size:11.5px; color:var(--ink-faint); font-style:italic; margin:20px 0 0; }
   .sustain-item{
     display:flex;
     align-items:flex-start;
@@ -817,6 +833,29 @@
           <div class="sustain-item"><img src="assets/sellos/ecodye.png" alt="" loading="lazy"><div class="sustain-text"><h3 contenteditable="true" spellcheck="false" data-key="sustain-ecodye-title">Eco Dye ZWW</h3><p contenteditable="true" spellcheck="false" data-key="sustain-ecodye-desc">Teñido de cero vertido de agua residual (Zero Wastewater).</p></div></div>
           <div class="sustain-item"><img src="assets/sellos/poliester.png" alt="" loading="lazy"><div class="sustain-text"><h3 contenteditable="true" spellcheck="false" data-key="sustain-poliester-title">Poliéster recuperado</h3><p contenteditable="true" spellcheck="false" data-key="sustain-poliester-desc">Fibra obtenida a partir de botellas PET recicladas.</p></div></div>
           <div class="sustain-item"><img src="assets/sellos/canamo.png" alt="" loading="lazy"><div class="sustain-text"><h3 contenteditable="true" spellcheck="false" data-key="sustain-canamo-title">Cáñamo</h3><p contenteditable="true" spellcheck="false" data-key="sustain-canamo-desc">Fibra natural de bajo consumo de agua y alto rendimiento.</p></div></div>
+        </div>
+
+        <div class="impact-stats">
+          <h3 contenteditable="true" spellcheck="false" data-key="impact-head">Nuestro impacto</h3>
+          <div class="impact-grid">
+            <div class="impact-tile">
+              <span class="impact-num" contenteditable="true" spellcheck="false" data-key="impact-1-num">100%</span>
+              <span class="impact-label" contenteditable="true" spellcheck="false" data-key="impact-1-label">Tinte Eco Dye de cero vertido de agua residual</span>
+            </div>
+            <div class="impact-tile">
+              <span class="impact-num" contenteditable="true" spellcheck="false" data-key="impact-2-num">0%</span>
+              <span class="impact-label" contenteditable="true" spellcheck="false" data-key="impact-2-label">Fibra recuperada en la colección actual</span>
+            </div>
+            <div class="impact-tile">
+              <span class="impact-num" contenteditable="true" spellcheck="false" data-key="impact-3-num">0</span>
+              <span class="impact-label" contenteditable="true" spellcheck="false" data-key="impact-3-label">Prendas hechas bajo pedido, sin sobreproducción</span>
+            </div>
+            <div class="impact-tile">
+              <span class="impact-num" contenteditable="true" spellcheck="false" data-key="impact-4-num">0%</span>
+              <span class="impact-label" contenteditable="true" spellcheck="false" data-key="impact-4-label">Pagos a talleres y proveedores locales</span>
+            </div>
+          </div>
+          <p class="impact-note" contenteditable="true" spellcheck="false" data-key="impact-note">Cifras en construcción &mdash; las iremos publicando a medida que las midamos.</p>
         </div>
       </div>
     </div>
