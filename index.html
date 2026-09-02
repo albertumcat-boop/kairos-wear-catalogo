@@ -384,7 +384,8 @@
   .dot-save{ width:6px;height:6px;border-radius:50%; background:var(--good); flex:none; }
   .toolbar-actions{ display:flex; gap:10px; flex-wrap:wrap; }
   body:not(.edit-mode) #resetBtn{ display:none; }
-  body.view-only .toolbar, body.view-only .top-meta{ display:none; }
+  body.view-only .toolbar-hint{ display:none; }
+  body.view-only .toolbar{ justify-content:flex-end; }
   .btn{
     font:inherit;
     font-family:"IBM Plex Sans", sans-serif;
