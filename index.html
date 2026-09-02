@@ -1808,6 +1808,8 @@
     downloadBtn.disabled = true;
 
     var clone = document.documentElement.cloneNode(true);
+    var clonedDownloadBtn = clone.querySelector("#downloadBtn");
+    if(clonedDownloadBtn){ clonedDownloadBtn.textContent = originalLabel; clonedDownloadBtn.disabled = false; }
     clone.querySelectorAll("[contenteditable]").forEach(function(el){ el.removeAttribute("contenteditable"); });
     clone.querySelectorAll("input").forEach(function(el){ el.setAttribute("value", el.value); });
     clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag, .login-gate, .admin-trigger").forEach(function(el){ el.remove(); });
