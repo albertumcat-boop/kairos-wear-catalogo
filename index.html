@@ -399,6 +399,27 @@
     max-width:64ch;
     margin:0;
   }
+  .add-card-btn{
+    display:none;
+    margin-top:14px;
+    font:inherit; font-size:12.5px; font-weight:600; letter-spacing:0.02em;
+    padding:8px 14px;
+    border:1px dashed var(--accent); border-radius:2px;
+    background:var(--accent-soft); color:var(--accent-ink);
+    cursor:pointer;
+  }
+  .add-card-btn:hover{ background:var(--accent); color:#fff9ef; }
+  body.edit-mode .add-card-btn{ display:inline-flex; }
+  .remove-card-btn{
+    display:none;
+    position:absolute; top:8px; right:8px; z-index:2;
+    width:24px; height:24px; border-radius:50%;
+    background:rgba(20,16,10,0.55); color:#fff9ef;
+    border:none; font-size:14px; line-height:1; cursor:pointer;
+  }
+  .remove-card-btn:hover{ background:#a33d2a; }
+  body.edit-mode .remove-card-btn{ display:flex; align-items:center; justify-content:center; }
+  .card.removed{ display:none; }
 
   /* ---------- Card grid (shared: products + services) ---------- */
   .grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; margin-bottom:64px; }
@@ -406,6 +427,7 @@
   @media (max-width:600px){ .grid{ grid-template-columns:1fr; } .wrap{padding:0 18px 40px;} header.top{padding-top:36px;} }
 
   .card{
+    position:relative;
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:var(--radius);
@@ -848,7 +870,7 @@
   }
 
   @media print{
-    .site-nav, .hero, .sustain, .toolbar, .edit-flag, .login-gate, .lightbox, .cart-fab, .cart-drawer, .cart-overlay, .photo-add-btn, .photo-remove-btn, .empty-label, .gallery-strip, .material-icons, .card-tags{ display:none; }
+    .site-nav, .hero, .sustain, .toolbar, .edit-flag, .login-gate, .lightbox, .cart-fab, .cart-drawer, .cart-overlay, .orders-fab, .photo-add-btn, .photo-remove-btn, .empty-label, .gallery-strip, .material-icons, .card-tags, .add-card-btn, .remove-card-btn{ display:none; }
     body{ background:#fff; font-size:11px; }
     .wrap{ padding:0 6px; }
     header.top{ padding:10px 0; margin-bottom:10px; }
@@ -982,6 +1004,7 @@
     <div class="section-head" id="catalogo">
       <h2 contenteditable="true" spellcheck="false" data-key="collection-head">Colección</h2>
       <p contenteditable="true" spellcheck="false" data-key="collection-intro">Prendas y accesorios de la línea crudo. Precio al detal y al mayor por pieza.</p>
+      <button type="button" class="add-card-btn" id="addProductBtn">+ Agregar prenda</button>
     </div>
 
     <div class="grid" id="grid">
@@ -1339,12 +1362,13 @@
     <div class="section-head" id="servicios">
       <h2 contenteditable="true" spellcheck="false" data-key="services-head">Servicios de personalización</h2>
       <p contenteditable="true" spellcheck="false" data-key="services-intro">Llevamos tus diseños a la prenda. Cuatro técnicas según acabado, cantidad y presupuesto. Precio por unidad aplicado.</p>
+      <button type="button" class="add-card-btn" id="addServiceBtn">+ Agregar servicio</button>
     </div>
 
     <div class="grid" id="servicesGrid">
 
       <article class="card" data-id="vinil">
-        <div class="card-photo service-badge"><span class="card-ref">SERV-01</span><span class="svc-name">Vinil</span><span class="svc-kind">Corte &amp; planchado</span></div>
+        <div class="card-photo service-badge"><span class="card-ref">SERV-01</span><span class="svc-name" contenteditable="true" spellcheck="false" data-key="svcname-vinil">Vinil</span><span class="svc-kind" contenteditable="true" spellcheck="false" data-key="svckind-vinil">Corte &amp; planchado</span></div>
         <div class="card-body">
           <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-vinil">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-vinil">Vinil Textil</h2>
@@ -1365,7 +1389,7 @@
       </article>
 
       <article class="card" data-id="dtf">
-        <div class="card-photo service-badge"><span class="card-ref">SERV-02</span><span class="svc-name">DTF</span><span class="svc-kind">Impresión digital</span></div>
+        <div class="card-photo service-badge"><span class="card-ref">SERV-02</span><span class="svc-name" contenteditable="true" spellcheck="false" data-key="svcname-dtf">DTF</span><span class="svc-kind" contenteditable="true" spellcheck="false" data-key="svckind-dtf">Impresión digital</span></div>
         <div class="card-body">
           <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-dtf">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-dtf">DTF (Direct to Film)</h2>
@@ -1386,7 +1410,7 @@
       </article>
 
       <article class="card" data-id="uvdtf">
-        <div class="card-photo service-badge"><span class="card-ref">SERV-03</span><span class="svc-name">UV DTF</span><span class="svc-kind">Transferencia UV</span></div>
+        <div class="card-photo service-badge"><span class="card-ref">SERV-03</span><span class="svc-name" contenteditable="true" spellcheck="false" data-key="svcname-uvdtf">UV DTF</span><span class="svc-kind" contenteditable="true" spellcheck="false" data-key="svckind-uvdtf">Transferencia UV</span></div>
         <div class="card-body">
           <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-uvdtf">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-uvdtf">UV DTF</h2>
@@ -1407,7 +1431,7 @@
       </article>
 
       <article class="card" data-id="bordado">
-        <div class="card-photo service-badge stitched"><span class="card-ref">SERV-04</span><span class="svc-name">Bordado</span><span class="svc-kind">Hilo industrial</span></div>
+        <div class="card-photo service-badge stitched"><span class="card-ref">SERV-04</span><span class="svc-name" contenteditable="true" spellcheck="false" data-key="svcname-bordado">Bordado</span><span class="svc-kind" contenteditable="true" spellcheck="false" data-key="svckind-bordado">Hilo industrial</span></div>
         <div class="card-body">
           <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-bordado">Personalización</span>
           <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-bordado">Bordado</h2>
@@ -1529,7 +1553,7 @@
 <script>
 (function(){
   var STORE_KEY = "kairos-wear-catalog-v3";
-  var store = { prices:{}, texts:{}, gallery:{}, materials:{}, removedMain:{}, tags:{}, settings:{} };
+  var store = { prices:{}, texts:{}, gallery:{}, materials:{}, removedMain:{}, tags:{}, settings:{}, customCards:[], removedCards:[] };
   try{
     var saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
     if(saved.prices) store.prices = saved.prices;
@@ -1539,12 +1563,30 @@
     if(saved.removedMain) store.removedMain = saved.removedMain;
     if(saved.tags) store.tags = saved.tags;
     if(saved.settings) store.settings = saved.settings;
+    if(saved.customCards) store.customCards = saved.customCards;
+    if(saved.removedCards) store.removedCards = saved.removedCards;
   }catch(e){}
 
   var EDIT_MODE = false;
-  var editableEls = document.querySelectorAll('[contenteditable="true"][data-key]');
+  var editableEls = [];
   var defaults = {};
-  editableEls.forEach(function(el){ defaults[el.getAttribute("data-key")] = el.textContent; });
+  function registerEditableEl(el){
+    var key = el.getAttribute("data-key");
+    defaults[key] = el.textContent;
+    editableEls.push(el);
+    if(EDIT_MODE){ el.setAttribute("contenteditable", "true"); } else { el.removeAttribute("contenteditable"); }
+    if(store.texts[key] !== undefined){ el.textContent = store.texts[key]; }
+    el.addEventListener("input", function(){
+      var text = el.textContent;
+      if(text.trim() === defaults[key].trim()){ delete store.texts[key]; }
+      else { store.texts[key] = text; }
+      save();
+    });
+    el.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){ e.preventDefault(); el.blur(); }
+    });
+  }
+  document.querySelectorAll('[contenteditable="true"][data-key]').forEach(registerEditableEl);
 
   function setEditMode(isEditor){
     EDIT_MODE = isEditor;
@@ -1590,26 +1632,14 @@
         removedMain: store.removedMain,
         tags: store.tags,
         settings: store.settings,
+        customCards: store.customCards,
+        removedCards: store.removedCards,
         updatedAt: Date.now()
       }).catch(function(err){ console.error("Kairos sync error:", err); });
     }, 500);
   }
   function fmt(n){ return n.toLocaleString("es-VE", {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
-  /* ---- editable text (site-wide) ---- */
-  editableEls.forEach(function(el){
-    var key = el.getAttribute("data-key");
-    if(store.texts[key] !== undefined){ el.textContent = store.texts[key]; }
-    el.addEventListener("input", function(){
-      var text = el.textContent;
-      if(text.trim() === defaults[key].trim()){ delete store.texts[key]; }
-      else { store.texts[key] = text; }
-      save();
-    });
-    el.addEventListener("keydown", function(e){
-      if(e.key === "Enter"){ e.preventDefault(); el.blur(); }
-    });
-  });
 
   var resetBtnEl = document.getElementById("resetBtn");
   if(resetBtnEl){
@@ -1625,17 +1655,17 @@
   }
 
   /* ---- prices (product + service cards) ---- */
-  var cards = document.querySelectorAll(".card");
   function updateCount(){
+    var allCards = document.querySelectorAll(".card");
     var withPrice = 0;
-    cards.forEach(function(c){
+    allCards.forEach(function(c){
       var id = c.getAttribute("data-id");
       if(store.prices[id] && store.prices[id].detal) withPrice++;
     });
-    document.getElementById("countInfo").textContent = withPrice + " de " + cards.length + " ítems con precio";
+    document.getElementById("countInfo").textContent = withPrice + " de " + allCards.length + " ítems con precio";
   }
 
-  cards.forEach(function(card){
+  function setupPriceCard(card){
     var id = card.getAttribute("data-id");
     var detalInput = card.querySelector('input[data-role="detal"]');
     var mayorInput = card.querySelector('input[data-role="mayor"]');
@@ -1700,7 +1730,8 @@
     if(minqtyInput){ minqtyInput.addEventListener("input", persistPrices); }
     if(stockInput){ stockInput.addEventListener("input", function(){ refreshStock(); persistPrices(); }); }
     refreshMargin();
-  });
+  }
+  document.querySelectorAll(".card").forEach(setupPriceCard);
 
   updateCount();
 
@@ -1801,7 +1832,7 @@
     camisam: ["eco","antifluid"]
   };
   var materialApplyFns = {};
-  document.querySelectorAll(".material-icons").forEach(function(box){
+  function setupMaterialBox(box){
     var id = box.getAttribute("data-materials-for");
     function currentActive(){ return store.materials[id] || DEFAULT_MATERIALS[id] || []; }
     function applyActive(){
@@ -1824,12 +1855,13 @@
         applyActive();
       });
     });
-  });
+  }
+  document.querySelectorAll(".material-icons").forEach(setupMaterialBox);
 
   /* ---- editable tags (add / remove per card) ---- */
   var DEFAULT_TAGS = {};
   var tagRenderFns = {};
-  document.querySelectorAll(".card-tags").forEach(function(box){
+  function setupTagsBox(box){
     var card = box.closest(".card");
     var id = card.getAttribute("data-id");
     DEFAULT_TAGS[id] = Array.from(box.querySelectorAll(".tag")).map(function(t){ return t.textContent.trim(); });
@@ -1890,7 +1922,8 @@
     }
     renderTags();
     tagRenderFns[id] = renderTags;
-  });
+  }
+  document.querySelectorAll(".card-tags").forEach(setupTagsBox);
 
   /* ---- extra photos per product + lightbox ---- */
   function resizeImage(file, maxDim, quality){
@@ -1944,10 +1977,11 @@
     if(e.key === "ArrowRight") lbStep(1);
   });
 
-  document.querySelectorAll(".card-photo.zoomable").forEach(function(photo){
+  function setupPhotoCard(photo){
     var id = photo.getAttribute("data-photo-id");
     var mainImgEl = photo.querySelector(".main-photo");
     var mainSrc = mainImgEl.src;
+    if(mainImgEl.getAttribute("src") === "" || !mainImgEl.getAttribute("src")) mainSrc = "";
     var mainAlt = mainImgEl.alt;
     var strip = document.querySelector('.gallery-strip[data-gallery-for="' + id + '"]');
     var fileInput = document.querySelector('.gallery-file-input[data-for="' + id + '"]');
@@ -1956,7 +1990,8 @@
 
     function effectiveList(){
       var extras = store.gallery[id] || [];
-      return store.removedMain[id] ? extras.slice() : [mainSrc].concat(extras);
+      var base = (!store.removedMain[id] && mainSrc) ? [mainSrc] : [];
+      return base.concat(extras);
     }
 
     function render(){
@@ -2035,13 +2070,144 @@
         fileInput.value = "";
       });
     }
+  }
+  document.querySelectorAll(".card-photo.zoomable").forEach(setupPhotoCard);
+
+  /* ---- Add / remove whole cards (custom products & services) ---- */
+  var PRODUCT_TEMPLATE_ID = "camiseta";
+  var SERVICE_TEMPLATE_ID = "vinil";
+
+  function setupRemoveButton(card){
+    if(card.querySelector(".remove-card-btn")) return;
+    var id = card.getAttribute("data-id");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "remove-card-btn";
+    btn.title = "Eliminar";
+    btn.textContent = "×";
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      if(!confirm("¿Eliminar esta pieza del catálogo? No afecta pedidos ya realizados.")) return;
+      if(store.removedCards.indexOf(id) === -1) store.removedCards.push(id);
+      card.classList.add("removed");
+      save();
+    });
+    card.appendChild(btn);
+  }
+
+  function applyRemovedCards(){
+    document.querySelectorAll(".card").forEach(function(card){
+      var id = card.getAttribute("data-id");
+      card.classList.toggle("removed", store.removedCards.indexOf(id) !== -1);
+    });
+  }
+
+  function wireUpCard(card){
+    var kind = card.getAttribute("data-kind");
+    card.querySelectorAll("[data-key]").forEach(registerEditableEl);
+    var materialsBox = card.querySelector(".material-icons");
+    if(materialsBox) setupMaterialBox(materialsBox);
+    var tagsBox = card.querySelector(".card-tags");
+    if(tagsBox) setupTagsBox(tagsBox);
+    var photo = card.querySelector(".card-photo.zoomable");
+    if(photo) setupPhotoCard(photo);
+    setupPriceCard(card);
+    var sizeRow = card.querySelector(".size-row");
+    if(sizeRow) setupSizeRow(sizeRow);
+    var addCartBtn = card.querySelector("[data-add-cart]");
+    if(addCartBtn) setupAddCartBtn(addCartBtn);
+    setupRemoveButton(card);
+    card.querySelectorAll('input[data-role]').forEach(function(el){ el.readOnly = !EDIT_MODE; el.tabIndex = EDIT_MODE ? 0 : -1; });
+  }
+
+  function buildCardFromTemplate(newId, kind){
+    var templateId = kind === "service" ? SERVICE_TEMPLATE_ID : PRODUCT_TEMPLATE_ID;
+    var template = document.querySelector('.card[data-id="' + templateId + '"]');
+    if(!template) return null;
+    var html = template.outerHTML.split(templateId).join(newId);
+    var wrap = document.createElement("div");
+    wrap.innerHTML = html;
+    var card = wrap.firstElementChild;
+    card.setAttribute("data-kind", kind);
+    card.classList.remove("removed");
+    var staleRemoveBtn = card.querySelector(".remove-card-btn");
+    if(staleRemoveBtn) staleRemoveBtn.remove();
+
+    var titleEl = card.querySelector(".card-title");
+    var descEl = card.querySelector(".card-desc");
+    var catEl = card.querySelector(".card-cat");
+    if(titleEl) titleEl.textContent = kind === "service" ? "Nuevo servicio" : "Nueva prenda";
+    if(descEl) descEl.textContent = "Escribe aquí la descripción.";
+    if(catEl) catEl.textContent = kind === "service" ? "Personalización" : "Categoría";
+    var tagsBox = card.querySelector(".card-tags");
+    if(tagsBox) tagsBox.innerHTML = "";
+    var refEl = card.querySelector(".card-ref");
+    if(refEl) refEl.textContent = "NUEVO";
+    var mainImg = card.querySelector(".main-photo");
+    if(mainImg){ mainImg.removeAttribute("src"); }
+    var svcName = card.querySelector(".svc-name");
+    var svcKind = card.querySelector(".svc-kind");
+    if(svcName) svcName.textContent = "Nuevo";
+    if(svcKind) svcKind.textContent = "Servicio";
+
+    return card;
+  }
+
+  function addNewCard(kind){
+    var grid = document.getElementById(kind === "service" ? "servicesGrid" : "grid");
+    if(!grid) return;
+    var newId = "custom" + Date.now();
+    var card = buildCardFromTemplate(newId, kind);
+    if(!card) return;
+    grid.appendChild(card);
+    wireUpCard(card);
+    store.customCards.push({ id: newId, kind: kind });
+    save();
+    card.scrollIntoView({ block: "center" });
+    var titleEl = card.querySelector(".card-title");
+    if(titleEl) titleEl.focus();
+  }
+
+  function ensureCustomCardsExist(){
+    (store.customCards || []).forEach(function(entry){
+      if(document.querySelector('.card[data-id="' + entry.id + '"]')) return;
+      var grid = document.getElementById(entry.kind === "service" ? "servicesGrid" : "grid");
+      if(!grid) return;
+      var card = buildCardFromTemplate(entry.id, entry.kind);
+      if(!card) return;
+      grid.appendChild(card);
+      wireUpCard(card);
+    });
+    applyRemovedCards();
+    updateCount();
+  }
+
+  document.querySelectorAll(".card").forEach(function(card){
+    card.setAttribute("data-kind", card.closest("#servicesGrid") ? "service" : "product");
+    setupRemoveButton(card);
   });
+  applyRemovedCards();
+
+  var addProductBtn = document.getElementById("addProductBtn");
+  if(addProductBtn) addProductBtn.addEventListener("click", function(){ addNewCard("product"); });
+  var addServiceBtn = document.getElementById("addServiceBtn");
+  if(addServiceBtn) addServiceBtn.addEventListener("click", function(){ addNewCard("service"); });
+
+  ensureCustomCardsExist();
 
   /* ---- Firebase: live sync + edit-mode login gate ---- */
   function applyRemoteState(data){
     if(!data) return;
     applyingRemote = true;
     try{
+      if(data.customCards){
+        store.customCards = data.customCards;
+        ensureCustomCardsExist();
+      }
+      if(data.removedCards){
+        store.removedCards = data.removedCards;
+        applyRemovedCards();
+      }
       if(data.prices){
         Object.keys(data.prices).forEach(function(id){
           var p = data.prices[id] || {};
@@ -2193,7 +2359,7 @@
 
   var selectedSize = {};
 
-  document.querySelectorAll(".size-row").forEach(function(row){
+  function setupSizeRow(row){
     var pid = row.getAttribute("data-sizes-for");
     row.querySelectorAll(".size-chip").forEach(function(chip){
       chip.addEventListener("click", function(){
@@ -2202,7 +2368,8 @@
         selectedSize[pid] = chip.getAttribute("data-size");
       });
     });
-  });
+  }
+  document.querySelectorAll(".size-row").forEach(setupSizeRow);
 
   function cartCurrency(n){ return "$" + n.toLocaleString("es-VE", {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
@@ -2289,7 +2456,7 @@
   }
   renderCartDrawer();
 
-  document.querySelectorAll("[data-add-cart]").forEach(function(btn){
+  function setupAddCartBtn(btn){
     var pid = btn.getAttribute("data-add-cart");
     btn.addEventListener("click", function(){
       var card = btn.closest(".card");
@@ -2328,7 +2495,8 @@
       btn.textContent = "Agregado";
       setTimeout(function(){ btn.textContent = original; btn.classList.remove("added"); }, 1200);
     });
-  });
+  }
+  document.querySelectorAll("[data-add-cart]").forEach(setupAddCartBtn);
 
   var cartFab = document.getElementById("cartFab");
   var cartOverlay = document.getElementById("cartOverlay");
