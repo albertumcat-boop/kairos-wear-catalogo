@@ -748,11 +748,12 @@
   footer.site .foot-brand{ display:flex; align-items:center; gap:8px; }
   footer.site .foot-brand img{ width:18px; height:18px; }
   .admin-trigger{
-    border:1px solid var(--line); background:var(--surface); cursor:pointer;
-    color:var(--ink-soft); font-size:11.5px; font-weight:500; font-family:inherit;
-    padding:6px 12px; border-radius:999px; line-height:1;
+    border:none; background:none; cursor:pointer;
+    padding:4px; line-height:1; opacity:0.55;
+    -webkit-tap-highlight-color:transparent;
   }
-  .admin-trigger:hover{ border-color:var(--accent); color:var(--accent-ink); }
+  .admin-trigger img{ width:18px; height:18px; display:block; }
+  .admin-trigger:hover{ opacity:1; }
   body.edit-mode .admin-trigger{ display:none; }
 
   .lightbox{
@@ -1431,7 +1432,7 @@
     <footer class="site">
       <div class="foot-brand"><img src="assets/logo-mark.png" alt="Kairos Wear"><span contenteditable="true" spellcheck="false" data-key="footer-credit">Kairos Wear &mdash; catálogo de referencia interno</span></div>
       <span id="countInfo">0 de 11 ítems con precio</span>
-      <button type="button" id="adminTrigger" class="admin-trigger" title="Acceso administrador">Editar catálogo</button>
+      <button type="button" id="adminTrigger" class="admin-trigger" title="Kairos Wear"><img src="assets/logo-mark.png" alt=""></button>
     </footer>
   </div>
 
@@ -2149,7 +2150,18 @@
   var adminTriggerBtn = document.getElementById("adminTrigger");
   var loginGateEl = document.getElementById("loginGate");
   if(adminTriggerBtn && loginGateEl){
-    adminTriggerBtn.addEventListener("click", function(){ loginGateEl.classList.add("open"); });
+    var tapCount = 0;
+    var tapTimer = null;
+    adminTriggerBtn.addEventListener("click", function(){
+      tapCount++;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(function(){ tapCount = 0; }, 1500);
+      if(tapCount >= 5){
+        tapCount = 0;
+        clearTimeout(tapTimer);
+        loginGateEl.classList.add("open");
+      }
+    });
   }
   var loginCancelBtn = document.getElementById("loginCancel");
   if(loginCancelBtn && loginGateEl){
