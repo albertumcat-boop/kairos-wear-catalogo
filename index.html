@@ -384,6 +384,7 @@
   .dot-save{ width:6px;height:6px;border-radius:50%; background:var(--good); flex:none; }
   .toolbar-actions{ display:flex; gap:10px; flex-wrap:wrap; }
   body:not(.edit-mode) #resetBtn{ display:none; }
+  body.view-only .toolbar, body.view-only .top-meta{ display:none; }
   .btn{
     font:inherit;
     font-family:"IBM Plex Sans", sans-serif;
@@ -892,9 +893,11 @@
     border:none; background:none; cursor:pointer; font-family:inherit; padding:4px;
   }
 
+  .print-logo{ display:none; }
   @media print{
     .site-nav, .hero, .sustain, .toolbar, .edit-flag, .login-gate, .lightbox, .cart-fab, .cart-drawer, .cart-overlay, .orders-fab, .photo-add-btn, .photo-remove-btn, .empty-label, .gallery-strip, .material-icons, .card-tags, .add-card-btn, .remove-card-btn{ display:none; }
     body{ background:#fff; font-size:11px; }
+    .print-logo{ display:block; max-width:220px; margin:0 auto 6px; }
     .wrap{ padding:0 6px; }
     header.top{ padding:10px 0; margin-bottom:10px; }
     .section-head{ margin-bottom:8px; }
@@ -945,7 +948,7 @@
   </nav>
 
   <section class="hero" id="inicio">
-    <video autoplay muted loop playsinline id="heroVideo">
+    <video autoplay muted loop playsinline poster="assets/hero-poster.webp" id="heroVideo">
       <source src="assets/hero-bg.mp4" type="video/mp4">
     </video>
     <div class="hero-content">
@@ -1018,6 +1021,8 @@
       </div>
     </div>
   </section>
+
+  <img src="assets/hero-poster.webp" alt="Kairos Wear" class="print-logo">
 
   <div class="wrap">
     <header class="top">
@@ -1812,6 +1817,7 @@
     clone.querySelectorAll('img[src^="assets/"]').forEach(function(el){ assetEls.push({el:el, attr:"src", url:el.getAttribute("src")}); });
     clone.querySelectorAll('source[src^="assets/"]').forEach(function(el){ assetEls.push({el:el, attr:"src", url:el.getAttribute("src")}); });
     clone.querySelectorAll('link[rel="icon"][href^="assets/"]').forEach(function(el){ assetEls.push({el:el, attr:"href", url:el.getAttribute("href")}); });
+    clone.querySelectorAll('video[poster^="assets/"]').forEach(function(el){ assetEls.push({el:el, attr:"poster", url:el.getAttribute("poster")}); });
 
     var cache = {};
     var jobs = assetEls.map(function(item){
@@ -2021,8 +2027,7 @@
   function setupPhotoCard(photo){
     var id = photo.getAttribute("data-photo-id");
     var mainImgEl = photo.querySelector(".main-photo");
-    var mainSrc = mainImgEl.src;
-    if(mainImgEl.getAttribute("src") === "" || !mainImgEl.getAttribute("src")) mainSrc = "";
+    var mainSrc = mainImgEl.getAttribute("src") || "";
     var mainAlt = mainImgEl.alt;
     var strip = document.querySelector('.gallery-strip[data-gallery-for="' + id + '"]');
     var fileInput = document.querySelector('.gallery-file-input[data-for="' + id + '"]');
