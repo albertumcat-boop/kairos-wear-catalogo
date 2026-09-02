@@ -890,7 +890,7 @@
 <body>
 
   <nav class="site-nav">
-    <a href="#inicio" class="nav-brand"><img src="assets/logo-mark.png" alt=""><span>Kairos Wear</span></a>
+    <a href="#inicio" class="nav-brand" id="navBrand"><img src="assets/logo-mark.png" alt=""><span>Kairos Wear</span></a>
     <div class="nav-links">
       <a href="#inicio">Inicio</a>
       <a href="#catalogo">Colección</a>
@@ -2149,19 +2149,23 @@
   /* ---- admin access trigger (opens login, no separate URL needed) ---- */
   var adminTriggerBtn = document.getElementById("adminTrigger");
   var loginGateEl = document.getElementById("loginGate");
-  if(adminTriggerBtn && loginGateEl){
+  var navBrandEl = document.getElementById("navBrand");
+  if(loginGateEl && (adminTriggerBtn || navBrandEl)){
     var tapCount = 0;
     var tapTimer = null;
-    adminTriggerBtn.addEventListener("click", function(){
+    var registerTap = function(e){
+      if(e && e.preventDefault) e.preventDefault();
       tapCount++;
       clearTimeout(tapTimer);
-      tapTimer = setTimeout(function(){ tapCount = 0; }, 1500);
+      tapTimer = setTimeout(function(){ tapCount = 0; }, 3000);
       if(tapCount >= 5){
         tapCount = 0;
         clearTimeout(tapTimer);
         loginGateEl.classList.add("open");
       }
-    });
+    };
+    if(adminTriggerBtn) adminTriggerBtn.addEventListener("click", registerTap);
+    if(navBrandEl) navBrandEl.addEventListener("click", registerTap);
   }
   var loginCancelBtn = document.getElementById("loginCancel");
   if(loginCancelBtn && loginGateEl){
