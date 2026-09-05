@@ -1196,6 +1196,40 @@
         </div>
       </article>
 
+      <article class="card" data-id="mochila">
+        <div class="card-photo zoomable" data-photo-id="mochila"><span class="card-ref">KW-011</span><img class="main-photo" src="assets/products/mochila.webp" alt="Mochila de denim reciclado Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="mochila" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="mochila" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
+        <div class="gallery-strip" data-gallery-for="mochila"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="mochila">
+        <div class="card-body">
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-mochila">Accesorios</span>
+          <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-mochila">Mochila Denim Reciclado</h2>
+          <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-mochila">Mochila confeccionada con retazos de denim recuperados de nuestra propia producción. Bolsillo frontal con parche Kairos Wear y bolsillos laterales. Cada pieza es única según el retazo disponible.</div>
+          <div class="card-tags"><span class="tag">Denim reciclado</span><span class="tag">Pieza única</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="mochila">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
+          <div class="stock-line" data-stock-for="mochila"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-mochila-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
+          <div class="price-row">
+            <div class="price-field"><label for="p-mochila-detal">Detal</label>
+              <div class="price-input"><span class="cur">$</span><input id="p-mochila-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
+            </div>
+            <div class="price-field"><label for="p-mochila-mayor">Mayor</label>
+              <div class="price-input mayor"><span class="cur">$</span><input id="p-mochila-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-mochila-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
+            </div>
+            <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
+          </div>
+          <button type="button" class="add-cart-btn" data-add-cart="mochila">Agregar al carrito</button>
+        </div>
+      </article>
+
       <article class="card" data-id="jogger">
         <div class="card-photo zoomable" data-photo-id="jogger"><span class="card-ref">KW-002</span><img class="main-photo" src="assets/products/jogger.webp" alt="Jogger Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="jogger" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="jogger" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="jogger"></div>
@@ -1812,7 +1846,7 @@
     if(clonedDownloadBtn){ clonedDownloadBtn.textContent = originalLabel; clonedDownloadBtn.disabled = false; }
     clone.querySelectorAll("[contenteditable]").forEach(function(el){ el.removeAttribute("contenteditable"); });
     clone.querySelectorAll("input").forEach(function(el){ el.setAttribute("value", el.value); });
-    clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag, .login-gate, .admin-trigger").forEach(function(el){ el.remove(); });
+    clone.querySelectorAll(".photo-add-btn, .photo-remove-btn, .empty-label, .gallery-file-input, .edit-flag, .login-gate, .admin-trigger, .toolbar, .top-meta, .cart-fab, .cart-drawer, .cart-overlay, .orders-fab, .orders-drawer, .add-card-btn, .remove-card-btn").forEach(function(el){ el.remove(); });
     var fbBoot = clone.querySelector("#kairosFirebaseBoot");
     if(fbBoot) fbBoot.remove();
 
@@ -1879,7 +1913,8 @@
     cordon: ["poliester","eco"],
     basica: ["eco","huella"],
     camisah: ["eco","antifluid"],
-    camisam: ["eco","antifluid"]
+    camisam: ["eco","antifluid"],
+    mochila: ["fibra","eco"]
   };
   var materialApplyFns = {};
   function setupMaterialBox(box){
@@ -1997,6 +2032,9 @@
     });
   }
 
+  var DEFAULT_GALLERY = {
+    mochila: ["assets/products/mochila-lateral.webp"]
+  };
   var lightbox = document.getElementById("lightbox");
   var lbImg = document.getElementById("lbImg");
   var lbCount = document.getElementById("lbCount");
@@ -2038,7 +2076,7 @@
     var removeBtn = photo.querySelector(".photo-remove-btn");
 
     function effectiveList(){
-      var extras = store.gallery[id] || [];
+      var extras = store.gallery[id] || DEFAULT_GALLERY[id] || [];
       var base = (!store.removedMain[id] && mainSrc) ? [mainSrc] : [];
       return base.concat(extras);
     }
@@ -2072,6 +2110,7 @@
         rm.addEventListener("click", function(ev){
           ev.stopPropagation();
           var extraIndex = store.removedMain[id] ? i + 1 : i;
+          store.gallery[id] = (store.gallery[id] || DEFAULT_GALLERY[id] || []).slice();
           store.gallery[id].splice(extraIndex, 1);
           save();
           render();
@@ -2094,8 +2133,9 @@
         e.stopPropagation();
         if(!store.removedMain[id]){
           store.removedMain[id] = true;
-        } else if(store.gallery[id] && store.gallery[id].length){
-          store.gallery[id].splice(0, 1);
+        } else {
+          store.gallery[id] = (store.gallery[id] || DEFAULT_GALLERY[id] || []).slice();
+          if(store.gallery[id].length) store.gallery[id].splice(0, 1);
         }
         save();
         render();
@@ -2112,7 +2152,7 @@
         var files = Array.from(fileInput.files || []);
         if(!files.length) return;
         Promise.all(files.map(function(f){ return resizeImage(f, 1280, 0.82); })).then(function(dataUrls){
-          store.gallery[id] = (store.gallery[id] || []).concat(dataUrls);
+          store.gallery[id] = (store.gallery[id] || DEFAULT_GALLERY[id] || []).concat(dataUrls);
           save();
           render();
         }).catch(function(){});
