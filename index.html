@@ -943,6 +943,7 @@
     <div class="nav-links">
       <a href="#inicio">Inicio</a>
       <a href="#catalogo">Colección</a>
+      <a href="#accesorios">Accesorios</a>
       <a href="#servicios">Servicios</a>
       <a href="#sostenibilidad">Impacto</a>
     </div>
@@ -1050,7 +1051,7 @@
 
     <div class="section-head" id="catalogo">
       <h2 contenteditable="true" spellcheck="false" data-key="collection-head">Colección</h2>
-      <p contenteditable="true" spellcheck="false" data-key="collection-intro">Prendas y accesorios de la línea crudo. Precio al detal y al mayor por pieza.</p>
+      <p contenteditable="true" spellcheck="false" data-key="collection-intro">Prendas de la línea crudo. Precio al detal y al mayor por pieza.</p>
       <button type="button" class="add-card-btn" id="addProductBtn">+ Agregar prenda</button>
     </div>
 
@@ -1196,39 +1197,6 @@
         </div>
       </article>
 
-      <article class="card" data-id="mochila">
-        <div class="card-photo zoomable" data-photo-id="mochila"><span class="card-ref">KW-011</span><img class="main-photo" src="assets/products/mochila.webp" alt="Mochila de denim reciclado Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="mochila" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="mochila" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
-        <div class="gallery-strip" data-gallery-for="mochila"></div>
-        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="mochila">
-        <div class="card-body">
-          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-mochila">Accesorios</span>
-          <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-mochila">Mochila Denim Reciclado</h2>
-          <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-mochila">Mochila confeccionada con retazos de denim recuperados de nuestra propia producción. Bolsillo frontal con parche Kairos Wear y bolsillos laterales. Cada pieza es única según el retazo disponible.</div>
-          <div class="card-tags"><span class="tag">Denim reciclado</span><span class="tag">Pieza única</span><span class="tag eco">Sostenible</span></div>
-          <div class="material-icons" data-materials-for="mochila">
-            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
-            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
-            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
-            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
-            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
-            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
-            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
-            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
-          </div>
-          <div class="stock-line" data-stock-for="mochila"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-mochila-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
-          <div class="price-row">
-            <div class="price-field"><label for="p-mochila-detal">Detal</label>
-              <div class="price-input"><span class="cur">$</span><input id="p-mochila-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
-            </div>
-            <div class="price-field"><label for="p-mochila-mayor">Mayor</label>
-              <div class="price-input mayor"><span class="cur">$</span><input id="p-mochila-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
-            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-mochila-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
-            </div>
-            <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
-          </div>
-          <button type="button" class="add-cart-btn" data-add-cart="mochila">Agregar al carrito</button>
-        </div>
-      </article>
 
       <article class="card" data-id="jogger">
         <div class="card-photo zoomable" data-photo-id="jogger"><span class="card-ref">KW-002</span><img class="main-photo" src="assets/products/jogger.webp" alt="Jogger Kairos Wear color crudo" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="jogger" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="jogger" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
@@ -1370,6 +1338,51 @@
         </div>
       </article>
 
+
+
+    </div>
+
+    <div class="section-head" id="accesorios">
+      <h2 contenteditable="true" spellcheck="false" data-key="accessories-head">Accesorios</h2>
+      <p contenteditable="true" spellcheck="false" data-key="accessories-intro">Bolsos, morrales y complementos de la línea Kairos Wear.</p>
+      <button type="button" class="add-card-btn" id="addAccessoryBtn">+ Agregar accesorio</button>
+    </div>
+
+    <div class="grid" id="accessoriesGrid">
+
+      <article class="card" data-id="mochila">
+        <div class="card-photo zoomable" data-photo-id="mochila"><span class="card-ref">KW-011</span><img class="main-photo" src="assets/products/mochila.webp" alt="Mochila de denim reciclado Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="mochila" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="mochila" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
+        <div class="gallery-strip" data-gallery-for="mochila"></div>
+        <input type="file" accept="image/*" multiple hidden class="gallery-file-input" data-for="mochila">
+        <div class="card-body">
+          <span class="card-cat" contenteditable="true" spellcheck="false" data-key="cat-mochila">Accesorios</span>
+          <h2 class="card-title" contenteditable="true" spellcheck="false" data-key="title-mochila">Mochila Denim Reciclado</h2>
+          <div class="card-desc" contenteditable="true" spellcheck="false" data-key="desc-mochila">Mochila confeccionada con retazos de denim recuperados de nuestra propia producción. Bolsillo frontal con parche Kairos Wear y bolsillos laterales. Cada pieza es única según el retazo disponible.</div>
+          <div class="card-tags"><span class="tag">Denim reciclado</span><span class="tag">Pieza única</span><span class="tag eco">Sostenible</span></div>
+          <div class="material-icons" data-materials-for="mochila">
+            <button type="button" class="mat-icon" data-mat="eco" title="Eco"><img src="assets/sellos/eco.png" alt="Eco"></button>
+            <button type="button" class="mat-icon" data-mat="huella" title="Huella verde"><img src="assets/sellos/huella.png" alt="Huella verde"></button>
+            <button type="button" class="mat-icon" data-mat="fibra" title="Fibra recuperada"><img src="assets/sellos/fibra.png" alt="Fibra recuperada"></button>
+            <button type="button" class="mat-icon" data-mat="antibact" title="Antibacterial"><img src="assets/sellos/antibact.png" alt="Antibacterial"></button>
+            <button type="button" class="mat-icon" data-mat="antifluid" title="Antifluidos"><img src="assets/sellos/antifluid.png" alt="Antifluidos"></button>
+            <button type="button" class="mat-icon" data-mat="ecodye" title="Eco Dye ZWW"><img src="assets/sellos/ecodye.png" alt="Eco Dye ZWW"></button>
+            <button type="button" class="mat-icon" data-mat="poliester" title="Poliéster recuperado"><img src="assets/sellos/poliester.png" alt="Poliéster recuperado"></button>
+            <button type="button" class="mat-icon" data-mat="canamo" title="Cáñamo"><img src="assets/sellos/canamo.png" alt="Cáñamo"></button>
+          </div>
+          <div class="stock-line" data-stock-for="mochila"><span class="stock-dot"></span><span>Disponibles</span><input type="number" inputmode="numeric" min="0" step="1" id="p-mochila-stock" data-role="stock" placeholder="0"><span>uds.</span><span class="stock-status"></span></div>
+          <div class="price-row">
+            <div class="price-field"><label for="p-mochila-detal">Detal</label>
+              <div class="price-input"><span class="cur">$</span><input id="p-mochila-detal" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="detal"></div>
+            </div>
+            <div class="price-field"><label for="p-mochila-mayor">Mayor</label>
+              <div class="price-input mayor"><span class="cur">$</span><input id="p-mochila-mayor" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" data-role="mayor"></div>
+            <div class="min-qty"><span>Desde</span><input type="number" inputmode="numeric" min="1" step="1" class="minqty-input" id="p-mochila-minqty" data-role="minqty" placeholder="12"><span>uds.</span></div>
+            </div>
+            <div class="margin-line"><span>Diferencia mayor vs. detal</span><span class="m-val empty">&mdash;</span></div>
+          </div>
+          <button type="button" class="add-cart-btn" data-add-cart="mochila">Agregar al carrito</button>
+        </div>
+      </article>
       <article class="card" data-id="bolso">
         <div class="card-photo zoomable" data-photo-id="bolso"><span class="card-ref">KW-006</span><img class="main-photo" src="assets/products/bolso.webp" alt="Morral de mezclilla Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="bolso" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="bolso" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="bolso"></div>
@@ -1403,7 +1416,6 @@
           <button type="button" class="add-cart-btn" data-add-cart="bolso">Agregar al carrito</button>
         </div>
       </article>
-
       <article class="card" data-id="cordon">
         <div class="card-photo zoomable" data-photo-id="cordon"><span class="card-ref">KW-007</span><img class="main-photo" src="assets/products/cordon.webp" alt="Cordón porta-carnet Kairos Wear" loading="lazy"><button class="photo-add-btn" type="button" data-add-for="cordon" title="Agregar fotos">+</button><button class="photo-remove-btn" type="button" data-remove-for="cordon" title="Quitar foto">&times;</button><span class="empty-label">Sin foto &mdash; usa "+" para agregar</span></div>
         <div class="gallery-strip" data-gallery-for="cordon"></div>
@@ -1437,7 +1449,6 @@
           <button type="button" class="add-cart-btn" data-add-cart="cordon">Agregar al carrito</button>
         </div>
       </article>
-
     </div>
 
     <div class="section-head" id="servicios">
@@ -2164,7 +2175,12 @@
 
   /* ---- Add / remove whole cards (custom products & services) ---- */
   var PRODUCT_TEMPLATE_ID = "camiseta";
+  var ACCESSORY_TEMPLATE_ID = "bolso";
   var SERVICE_TEMPLATE_ID = "vinil";
+  var KIND_GRID = { product: "grid", accessory: "accessoriesGrid", service: "servicesGrid" };
+  var KIND_TEMPLATE = { product: PRODUCT_TEMPLATE_ID, accessory: ACCESSORY_TEMPLATE_ID, service: SERVICE_TEMPLATE_ID };
+  var KIND_TITLE = { product: "Nueva prenda", accessory: "Nuevo accesorio", service: "Nuevo servicio" };
+  var KIND_CAT = { product: "Categoría", accessory: "Accesorios", service: "Personalización" };
 
   function setupRemoveButton(card){
     if(card.querySelector(".remove-card-btn")) return;
@@ -2210,7 +2226,7 @@
   }
 
   function buildCardFromTemplate(newId, kind){
-    var templateId = kind === "service" ? SERVICE_TEMPLATE_ID : PRODUCT_TEMPLATE_ID;
+    var templateId = KIND_TEMPLATE[kind] || PRODUCT_TEMPLATE_ID;
     var template = document.querySelector('.card[data-id="' + templateId + '"]');
     if(!template) return null;
     var html = template.outerHTML.split(templateId).join(newId);
@@ -2225,9 +2241,9 @@
     var titleEl = card.querySelector(".card-title");
     var descEl = card.querySelector(".card-desc");
     var catEl = card.querySelector(".card-cat");
-    if(titleEl) titleEl.textContent = kind === "service" ? "Nuevo servicio" : "Nueva prenda";
+    if(titleEl) titleEl.textContent = KIND_TITLE[kind] || "Nueva prenda";
     if(descEl) descEl.textContent = "Escribe aquí la descripción.";
-    if(catEl) catEl.textContent = kind === "service" ? "Personalización" : "Categoría";
+    if(catEl) catEl.textContent = KIND_CAT[kind] || "Categoría";
     var tagsBox = card.querySelector(".card-tags");
     if(tagsBox) tagsBox.innerHTML = "";
     var refEl = card.querySelector(".card-ref");
@@ -2243,7 +2259,7 @@
   }
 
   function addNewCard(kind){
-    var grid = document.getElementById(kind === "service" ? "servicesGrid" : "grid");
+    var grid = document.getElementById(KIND_GRID[kind] || "grid");
     if(!grid) return;
     var newId = "custom" + Date.now();
     var card = buildCardFromTemplate(newId, kind);
@@ -2260,7 +2276,7 @@
   function ensureCustomCardsExist(){
     (store.customCards || []).forEach(function(entry){
       if(document.querySelector('.card[data-id="' + entry.id + '"]')) return;
-      var grid = document.getElementById(entry.kind === "service" ? "servicesGrid" : "grid");
+      var grid = document.getElementById(KIND_GRID[entry.kind] || "grid");
       if(!grid) return;
       var card = buildCardFromTemplate(entry.id, entry.kind);
       if(!card) return;
@@ -2272,13 +2288,16 @@
   }
 
   document.querySelectorAll(".card").forEach(function(card){
-    card.setAttribute("data-kind", card.closest("#servicesGrid") ? "service" : "product");
+    var kind = card.closest("#servicesGrid") ? "service" : (card.closest("#accessoriesGrid") ? "accessory" : "product");
+    card.setAttribute("data-kind", kind);
     setupRemoveButton(card);
   });
   applyRemovedCards();
 
   var addProductBtn = document.getElementById("addProductBtn");
   if(addProductBtn) addProductBtn.addEventListener("click", function(){ addNewCard("product"); });
+  var addAccessoryBtn = document.getElementById("addAccessoryBtn");
+  if(addAccessoryBtn) addAccessoryBtn.addEventListener("click", function(){ addNewCard("accessory"); });
   var addServiceBtn = document.getElementById("addServiceBtn");
   if(addServiceBtn) addServiceBtn.addEventListener("click", function(){ addNewCard("service"); });
 
